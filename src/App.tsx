@@ -1,7 +1,7 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { BaseComponent } from "components/BaseComponent";
+import React from 'react';
+import { BaseComponent } from 'components/BaseComponent';
+import './App.css';
+import logo from './logo.svg';
 
 function App() {
   return (

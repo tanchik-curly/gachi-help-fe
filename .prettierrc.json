@@ -1,0 +1,22 @@
+{
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid",
+    "bracketSameLine": false,
+    "importOrder": [
+      "^i18next$",
+      "^(react|react-dom)$",
+      "^react(.+)$",
+      ".+react.*",
+      "<THIRD_PARTY_MODULES>",
+      "^@",
+      "^~",
+      "^(assets|components|contexts|hooks|localization|pages|styles|utils)(\\/.*|$)",
+      "^[..]",
+      "^[.]",
+      "^.+\\.s?css$"
+    ],
+    "importOrderSeparation": false,
+    "importOrderSortSpecifiers": true
+  }

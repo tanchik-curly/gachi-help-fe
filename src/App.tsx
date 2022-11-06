@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import ProtectedRoute from 'routes/ProtectedRoute';
+import Header from 'components/Header';
 import { CertificationPage } from 'pages/CertificationPage';
 import { HelpPage } from 'pages/HelpPage';
 import { HomePage } from 'pages/HomePage';
@@ -16,18 +17,15 @@ function App() {
 
   return (
     <div className="App">
+      <Header />
       <Router>
         <Routes>
-          <ProtectedRoute
-            isAuthed={isAuthed}
-            path="/login"
-            element={<LoginPage />}
-          />
-          <ProtectedRoute
-            isAuthed={isAuthed}
-            path="/register"
-            element={<RegisterPage />}
-          />
+          <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
+          <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
           <Route path="/home" element={<HomePage />} />
           <Route path="/request-help" element={<HelpPage />} />
           <Route path="/social-information" element={<SocialInfoPage />} />

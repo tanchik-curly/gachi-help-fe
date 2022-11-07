@@ -7,8 +7,8 @@ import { HelpPage } from 'pages/HelpPage';
 import { HomePage } from 'pages/HomePage';
 import { LoginPage } from 'pages/LoginPage';
 import { NotFoundPage } from 'pages/NotFoundPage';
-import { RegisterPage } from 'pages/RegisterPage';
 import { SocialInfoPage } from 'pages/SocialInfoPage';
+import {ToastContainer} from 'react-toastify';
 import './App.css';
 
 function App() {
@@ -23,9 +23,6 @@ function App() {
           <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
             <Route path="/login" element={<LoginPage />} />
           </Route>
-          <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
-            <Route path="/register" element={<RegisterPage />} />
-          </Route>
           <Route path="/home" element={<HomePage />} />
           <Route path="/request-help" element={<HelpPage />} />
           <Route path="/social-information" element={<SocialInfoPage />} />
@@ -33,6 +30,9 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
+      <div>
+        <ToastContainer />
+      </div>
     </div>
   );
 }

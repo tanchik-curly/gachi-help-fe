@@ -1,0 +1,20 @@
+.control {
+    width: 100% !important;
+}
+
+.label {
+    text-align: start;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 350px !important;
+    margin-bottom: 15px;
+}
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}

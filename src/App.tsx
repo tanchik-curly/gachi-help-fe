@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import ProtectedRoute from 'routes/ProtectedRoute';
 import { useAppSelector } from 'store/hooks';
 import { ThemeProvider, createTheme } from '@mui/material';
+import { Drawer } from 'components/Drawer';
 import Header from 'components/Header';
 import { CertificationPage } from 'pages/CertificationPage';
 import { HelpPage } from 'pages/HelpPage';
@@ -26,6 +27,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header user={user} />
         <Router>
+          <Drawer />
           <Routes>
             <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
               <Route path="/login" element={<LoginPage />} />

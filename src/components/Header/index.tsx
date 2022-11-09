@@ -20,7 +20,7 @@ const Header: React.FC<Props> = ({ user }: Props) => {
   };
 
   return (
-    <AppBar>
+    <AppBar sx={{ zIndex: '1251 !important'}}>
       <Toolbar>
         <Stack
           flexDirection="row"

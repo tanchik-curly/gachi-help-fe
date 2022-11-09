@@ -3,3 +3,8 @@ export interface User {
   lastName: string;
   role: string;
 }
+
+export interface Table {
+  pagination: Record<string, any>;
+  itemsCount: number;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, matchPath, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Divider,
   List,
@@ -7,30 +7,37 @@ import {
   ListItemIcon,
   ListItemText,
   Drawer as MUIDrawer,
+  Typography,
 } from '@mui/material';
 import { getMenuItems } from 'utils/getMenuItems';
 
 export const Drawer = () => {
   const { pathname } = useLocation();
 
-  const returnedList = (pathTitle: any, pathTo: any, PathIcon: any) => (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const returnedList = (pathTitle: string, pathTo: string, PathIcon: any) => (
     <ListItemButton
       component={Link}
       to={pathTo}
       selected={pathname.includes(pathTo)}
       sx={{
+        color: 'white',
         '&.Mui-selected': {
-          color: 'blue',
+          color: '#5C6BC0',
           background: 'none',
         },
       }}
     >
       <ListItemIcon
-        {...(pathname.includes(pathTo) ? { sx: { color: 'blue' } } : {})}
+        {...(pathname.includes(pathTo)
+          ? { sx: { color: '#5C6BC0' } }
+          : { sx: { color: 'white' } })}
       >
         <PathIcon />
       </ListItemIcon>
-      <ListItemText primary={pathTitle} />
+      <ListItemText>
+        <Typography variant="subtitle2">{pathTitle}</Typography>
+      </ListItemText>
     </ListItemButton>
   );
 
@@ -39,9 +46,20 @@ export const Drawer = () => {
   );
 
   return (
-    <MUIDrawer variant="permanent" sx={{ zIndex: '1250 !important' }} open>
-      <Divider />
-      <List sx={{ paddingTop: '80px' }}>{menuItems}</List>
+    <MUIDrawer
+      variant="permanent"
+      elevation={16}
+      PaperProps={{
+        sx: {
+          backgroundColor: '#242424',
+          color: 'white',
+        },
+      }}
+      sx={{ zIndex: '1250 !important' }}
+      open
+    >
+      <Divider sx={{ borderColor: 'white' }} />
+      <List sx={{ padding: '80px 20px 0' }}>{menuItems}</List>
     </MUIDrawer>
   );
 };

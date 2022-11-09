@@ -1,6 +1,5 @@
 import React from 'react';
-import { LayoutRouteProps, Navigate, Outlet, Route } from 'react-router-dom';
-import { NotFoundPage } from 'pages/NotFoundPage';
+import { LayoutRouteProps, Navigate, Outlet } from 'react-router-dom';
 
 type ProtectedRouteProps = LayoutRouteProps & {
   isAuthed: boolean;

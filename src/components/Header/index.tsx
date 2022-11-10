@@ -1,17 +1,14 @@
 import React from 'react';
 import { User } from 'interfaces';
+import { useAppSelector } from 'store/hooks';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 
-type Props = {
-  user: User;
-};
-
-const Header: React.FC<Props> = ({ user }: Props) => {
-  const isAuth = true;
+const Header: React.FC = () => {
+  const user: User = useAppSelector(state => state.user);
 
   const formatUser = (user: User) => {
-    return `Logged in as ${user.firstName} ${user.lastName} a ${user.role}`;
+    return `Logged in as ${user.name} ${user.surname} a ${user.role}`;
   };
 
   // todo: implement logging out
@@ -20,7 +17,7 @@ const Header: React.FC<Props> = ({ user }: Props) => {
   };
 
   return (
-    <AppBar sx={{ zIndex: '1251 !important'}}>
+    <AppBar sx={{ zIndex: '1251 !important' }}>
       <Toolbar>
         <Stack
           flexDirection="row"
@@ -29,14 +26,12 @@ const Header: React.FC<Props> = ({ user }: Props) => {
           justifyContent="space-between"
         >
           <Typography>Gachi help</Typography>
-          {isAuth && (
-            <Stack flexDirection="row" alignItems="center">
-              <Typography>{formatUser(user)}</Typography>
-              <IconButton onClick={logoutHandler}>
-                <ExitToAppIcon sx={{ color: '#fff' }} />
-              </IconButton>
-            </Stack>
-          )}
+          <Stack flexDirection="row" alignItems="center">
+            <Typography>{formatUser(user)}</Typography>
+            <IconButton onClick={logoutHandler}>
+              <ExitToAppIcon sx={{ color: '#fff' }} />
+            </IconButton>
+          </Stack>
         </Stack>
       </Toolbar>
     </AppBar>

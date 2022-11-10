@@ -1,7 +1,12 @@
 export interface User {
-  firstName: string;
-  lastName: string;
-  role: string;
+  id: number;
+  login: string;
+  email: string;
+  role: number;
+  passwordHash: string;
+  name: string;
+  surname: string;
+  patronym: string;
 }
 
 export interface Table {

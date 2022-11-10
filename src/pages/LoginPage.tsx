@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { axiosInstance } from 'api';
+import { useAppDispatch } from 'store/hooks';
+import { signInUser } from 'store/slices/userSlice';
 import {
   Box,
   Button,
@@ -17,17 +19,14 @@ import './root.css';
 
 export const LoginPage = () => {
   const [userData, setUserData] = useState({ login: '', password: '' });
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const res: { token: string; id: number; expirationTime: number } =
-      await axiosInstance.post(
-        `${process.env.REACT_APP_API_BASE_URL}/Auth/login`,
-        userData,
-      );
-    setAccessToken(res?.token);
-    navigate('/home');
+    dispatch(signInUser({ email: userData.login, password: userData.password }))
+      .unwrap()
+      .then(() => navigate('/home'));
   };
 
   const handleChangeData = (event: React.ChangeEvent<HTMLInputElement>) => {

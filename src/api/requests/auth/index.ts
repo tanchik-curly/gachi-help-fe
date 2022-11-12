@@ -5,7 +5,7 @@ import routes from '../../apiRoutes';
 export type AuthResponse = {
   token: string;
   expirationTime: number;
-  user: User;
+  userId: number;
 };
 
 export type Credentials = {

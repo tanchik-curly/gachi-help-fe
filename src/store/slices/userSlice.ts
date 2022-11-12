@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { AuthResponse, Credentials, auth } from 'api/requests/auth';
-import { User } from 'interfaces';
+import { Roles, User } from 'interfaces';
 import {
   ActionReducerMapBuilder,
   createAsyncThunk,
@@ -8,12 +8,13 @@ import {
 } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { setAccessToken } from 'utils/authTokens';
+import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 
 const initialState: User = {
   id: 0,
   login: '',
   email: '',
-  role: 0,
+  role: Roles.User,
   passwordHash: '',
   name: '',
   surname: '',
@@ -26,7 +27,7 @@ export const signInUser = createAsyncThunk(
     try {
       const response: AuthResponse = await auth.login({ email, password });
       setAccessToken(response?.token);
-      return response.user;
+      return response;
     } catch (error: unknown) {
       throw Error('Invalid credentials');
     }
@@ -36,16 +37,25 @@ export const signInUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action: PayloadAction<User | null>) => {
+      if (action.payload) return { ...state, ...action.payload };
+      return { ...state, ...initialState };
+    },
+  },
   extraReducers: (builder: ActionReducerMapBuilder<User>) => {
     builder
       .addCase(
         signInUser.fulfilled,
-        (state, { payload }: PayloadAction<User>) => {
-          const userData: User = payload;
+        (state, { payload }: PayloadAction<AuthResponse>) => {
+          const userData: User | null = getUserDataFromToken(payload.token);
+          console.log(payload, userData);
           if (userData) {
-            state = userData;
             toast.success('Successfully logged in!');
+            return {
+              ...state,
+              ...userData,
+            };
           }
         },
       )
@@ -54,5 +64,7 @@ export const userSlice = createSlice({
       });
   },
 });
+
+export const { setUser } = userSlice.actions;
 
 export default userSlice.reducer;

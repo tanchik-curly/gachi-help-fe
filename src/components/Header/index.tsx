@@ -1,19 +1,24 @@
 import React from 'react';
-import { User } from 'interfaces';
+import { useNavigate } from 'react-router-dom';
+import { Roles, User } from 'interfaces';
 import { useAppSelector } from 'store/hooks';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import { removeAccessToken } from 'utils/authTokens';
 
 const Header: React.FC = () => {
   const user: User = useAppSelector(state => state.user);
+  const navigate = useNavigate();
 
+  console.log(user);
   const formatUser = (user: User) => {
-    return `Logged in as ${user.name} ${user.surname} a ${user.role}`;
+    return `Logged in as ${user.name} ${user.surname} as ${user.role}`;
   };
 
   // todo: implement logging out
   const logoutHandler = () => {
-    console.log('logged out');
+    removeAccessToken();
+    navigate('/login');
   };
 
   return (

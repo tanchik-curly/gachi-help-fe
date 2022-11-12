@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Drawer as MUIDrawer,
+  Paper,
   Typography,
 } from '@mui/material';
 import { getMenuItems } from 'utils/getMenuItems';
@@ -46,20 +47,24 @@ export const Drawer = () => {
   );
 
   return (
-    <MUIDrawer
-      variant="permanent"
-      elevation={16}
-      PaperProps={{
-        sx: {
-          backgroundColor: '#242424',
-          color: 'white',
-        },
+    <Paper
+      elevation={5}
+      // PaperProps={{
+      //   sx: {
+      //     backgroundColor: '#242424',
+      //     color: 'white',
+      //   },
+      // }}
+      sx={{
+        zIndex: '1250 !important',
+        width: 400,
+        height: '100vh',
+        backgroundColor: '#242424',
+        color: 'white',
       }}
-      sx={{ zIndex: '1250 !important' }}
-      open
     >
       <Divider sx={{ borderColor: 'white' }} />
       <List sx={{ padding: '80px 20px 0' }}>{menuItems}</List>
-    </MUIDrawer>
+    </Paper>
   );
 };

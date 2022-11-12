@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Outlet,
   Route,
@@ -8,6 +8,9 @@ import {
 import { ToastContainer } from 'react-toastify';
 import NoAuthTokenRestriction from 'routes/restriction/NoAuthTokenRestriction';
 import { Routes as Paths } from 'routes/routesConfig';
+import { useAppDispatch } from 'store/hooks';
+import { setUser } from 'store/slices/userSlice';
+import { Box } from '@mui/material';
 import { Drawer } from 'components/Drawer';
 import Header from 'components/Header';
 import { CertificationPage } from 'pages/CertificationPage';
@@ -15,9 +18,17 @@ import { HelpPage } from 'pages/HelpPage';
 import { HomePage } from 'pages/HomePage';
 import { LoginPage } from 'pages/LoginPage';
 import { SocialInfoPage } from 'pages/SocialInfoPage';
+import { getAccessToken } from 'utils/authTokens';
+import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 import './App.css';
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setUser(getUserDataFromToken(getAccessToken() || '')));
+  }, []);
+
   return (
     <div className="App">
       <Router>
@@ -27,8 +38,10 @@ function App() {
             element={
               <NoAuthTokenRestriction>
                 <Header />
-                <Drawer />
-                <Outlet />
+                <Box display="flex" flexDirection="row">
+                  <Drawer />
+                  <Outlet />
+                </Box>
               </NoAuthTokenRestriction>
             }
           >

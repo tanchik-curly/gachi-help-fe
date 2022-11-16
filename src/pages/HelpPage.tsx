@@ -1,5 +1,7 @@
 import React from 'react';
 import { Box, Button, Tab, Tabs, Typography } from '@mui/material';
+import { PeriodTabPanel } from 'components/HelpPageTabPanels/PeriodTabPanel';
+import { QuantityTabPanel } from 'components/HelpPageTabPanels/QuantityTabPanel';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -88,13 +90,10 @@ export const HelpPage = () => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        За періодом
+        <PeriodTabPanel />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
+        <QuantityTabPanel />
       </TabPanel>
     </Box>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAppSelector } from 'store/hooks';
 import {
   Divider,
   List,
@@ -14,11 +15,12 @@ import { getMenuItems } from 'utils/getMenuItems';
 
 export const Drawer = () => {
   const { pathname } = useLocation();
-
+  const role = useAppSelector(state => state.user.role);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const returnedList = (pathTitle: string, pathTo: string, PathIcon: any) => (
     <ListItemButton
       component={Link}
+      key={pathTo}
       to={pathTo}
       selected={pathname.includes(pathTo)}
       sx={{
@@ -42,7 +44,7 @@ export const Drawer = () => {
     </ListItemButton>
   );
 
-  const menuItems = getMenuItems().map(({ title, path, icon }) =>
+  const menuItems = getMenuItems(role).map(({ title, path, icon }) =>
     returnedList(title, path, icon),
   );
 

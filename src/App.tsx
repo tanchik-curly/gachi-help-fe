@@ -18,6 +18,7 @@ import { HelpPage } from 'pages/HelpPage';
 import { HomePage } from 'pages/HomePage';
 import { LoginPage } from 'pages/LoginPage';
 import { SocialInfoPage } from 'pages/SocialInfoPage';
+import { UsersPage } from 'pages/UsersPage';
 import { getAccessToken } from 'utils/authTokens';
 import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 import './App.css';
@@ -46,6 +47,7 @@ function App() {
             }
           >
             <Route path={Paths.Home} element={<HomePage />} />
+            <Route path={Paths.Users} element={<UsersPage />} />
             <Route path={Paths.RequestPage} element={<HelpPage />} />
             <Route
               path={Paths.SocialInformationPage}

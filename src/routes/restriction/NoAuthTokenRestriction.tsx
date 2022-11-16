@@ -8,7 +8,6 @@ const NoAuthTokenRestriction: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   const [isAuthorized, setIsAuthorized] = useState(!!getAccessToken());
-  console.log(isAuthorized);
   useEffect(() => {
     const eventId = LocalStorage.subscribe((key: string, value: string) => {
       if (!value && key === ACCESS_TOKEN) {

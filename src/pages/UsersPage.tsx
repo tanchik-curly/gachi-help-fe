@@ -1,60 +1,39 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectPagination } from 'store/slices/tableSlice';
+import { selectPagination, setItemsCount } from 'store/slices/tableSlice';
 import { getRequestedHelpByUserId } from 'store/slices/userSlice';
+import { getListOfUsers } from 'store/slices/usersSlice';
 import { Box, Typography } from '@mui/material';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
-import { homePageTitleRequestedHelps } from 'utils/tableTitles';
+import { homePageTitleRequestedHelps, usersTitle } from 'utils/tableTitles';
 
 export const UsersPage = () => {
   const dispatch = useAppDispatch();
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
-  const { lastRequestedHelpList, userId } = useAppSelector(state => ({
-    lastRequestedHelpList: state.user.requestedHelp.list,
-    userId: state.user.id,
+  const { usersList, count, filters } = useAppSelector(state => ({
+    count: state.users.list.itemCount,
+    usersList: state.users.list.items,
+    filters: state.users.filters,
   }));
 
   useEffect(() => {
-    if (userId) {
-      dispatch(
-        getRequestedHelpByUserId({
-          userId,
-          limit: 4,
-          skip: 0,
-        }),
-      );
-    }
-  }, [dispatch, rowsPerPage, currentPage, userId]);
+    dispatch(setItemsCount(count));
+    dispatch(
+      getListOfUsers({
+        limit: rowsPerPage,
+        skip: currentPage * rowsPerPage,
+      }),
+    );
+  }, [dispatch, rowsPerPage, currentPage, filters, count]);
 
-  console.log(userId);
-  // const commentItems =
-  //   lastRequestedHelpList &&
-  //   lastRequestedHelpList.map(comment => (
-  //     <TableContainerRow
-  //       id={comment.id.toString()}
-  //       key={comment.id}
-  //       commentDate={new Date(comment.date).toLocaleDateString('en-US')}
-  //       commentAuthor={comment.fullName}
-  //       threadName={comment.threadName}
-  //       commentName={comment.messageText}
-  //     />
-  //   ));
-
-  console.log(lastRequestedHelpList);
-  const requestedHelpList = lastRequestedHelpList.items.map(
-    requestedHelpItem => (
-      <TableContainerRow
-        id={requestedHelpItem.id.toString()}
-        key={requestedHelpItem.id}
-        commentDate={new Date(requestedHelpItem.createdAt).toLocaleDateString(
-          'en-US',
-        )}
-        userInfo={`${requestedHelpItem.author.name} ${requestedHelpItem.author.surname}`}
-        categoryName={requestedHelpItem.helpCategory.name}
-      />
-    ),
-  );
+  const parsedUsersList = usersList.map(user => (
+    <TableContainerRow
+      id={user!.id!.toString()}
+      key={user!.id}
+      userInfo={`${user!.name} ${user!.surname} ${user!.patronym}`}
+    />
+  ));
 
   return (
     <Box padding={5} width="100%" mt={10}>
@@ -68,13 +47,13 @@ export const UsersPage = () => {
         justifyContent="center"
         sx={{}}
       >
-        {requestedHelpList.length ? (
+        {parsedUsersList.length ? (
           <TableContainerGenerator
             pagination
             headerName="Остання запрошені допомоги"
-            count={requestedHelpList.length}
-            tableTitles={homePageTitleRequestedHelps}
-            tableItems={requestedHelpList}
+            count={parsedUsersList.length}
+            tableTitles={usersTitle}
+            tableItems={parsedUsersList}
           />
         ) : (
           <p>No states</p>

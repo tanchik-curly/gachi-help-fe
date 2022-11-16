@@ -11,3 +11,5 @@ export const homePageTitleRequestedHelps = [
   'Категорія запрошеної допомоги',
   'Стан запиту',
 ];
+
+export const usersTitle = ['Користувач'];

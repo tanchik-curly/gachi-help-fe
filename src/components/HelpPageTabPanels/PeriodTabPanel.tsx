@@ -7,35 +7,9 @@ import { Status } from 'components/Status';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import { homePageTitleRequestedHelps } from 'utils/tableTitles';
+import Filters from './filters/PeriodFilters';
 
-export const HomePage = () => {
-  const commentList = [
-    {
-      id: 1,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-    {
-      id: 2,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-    {
-      id: 3,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-  ];
-
+export const PeriodTabPanel = () => {
   const dispatch = useAppDispatch();
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
   const { lastRequestedHelpList, userId } = useAppSelector(state => ({
@@ -55,21 +29,6 @@ export const HomePage = () => {
     }
   }, [dispatch, rowsPerPage, currentPage, userId]);
 
-  console.log(userId);
-  // const commentItems =
-  //   lastRequestedHelpList &&
-  //   lastRequestedHelpList.map(comment => (
-  //     <TableContainerRow
-  //       id={comment.id.toString()}
-  //       key={comment.id}
-  //       commentDate={new Date(comment.date).toLocaleDateString('en-US')}
-  //       commentAuthor={comment.fullName}
-  //       threadName={comment.threadName}
-  //       commentName={comment.messageText}
-  //     />
-  //   ));
-
-  console.log(lastRequestedHelpList);
   const requestedHelpList = lastRequestedHelpList.items.map(
     requestedHelpItem => (
       <TableContainerRow
@@ -86,16 +45,13 @@ export const HomePage = () => {
   );
 
   return (
-    <Box padding={5} width="100%" mt={10}>
-      <Typography textAlign="left" sx={{ color: 'white' }} variant="h5">
-        Order info
-      </Typography>
+    <Box padding={5}>
+      <Filters />
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        sx={{}}
       >
         {requestedHelpList.length ? (
           <TableContainerGenerator

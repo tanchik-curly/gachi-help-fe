@@ -3,39 +3,11 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectPagination } from 'store/slices/tableSlice';
 import { getRequestedHelpByUserId } from 'store/slices/userSlice';
 import { Box, Typography } from '@mui/material';
-import { Status } from 'components/Status';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import { homePageTitleRequestedHelps } from 'utils/tableTitles';
 
-export const HomePage = () => {
-  const commentList = [
-    {
-      id: 1,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-    {
-      id: 2,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-    {
-      id: 3,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-  ];
-
+export const UsersPage = () => {
   const dispatch = useAppDispatch();
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
   const { lastRequestedHelpList, userId } = useAppSelector(state => ({
@@ -80,7 +52,6 @@ export const HomePage = () => {
         )}
         userInfo={`${requestedHelpItem.author.name} ${requestedHelpItem.author.surname}`}
         categoryName={requestedHelpItem.helpCategory.name}
-        categoryStatus={<Status status={requestedHelpItem.status} />}
       />
     ),
   );

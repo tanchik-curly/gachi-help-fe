@@ -29,9 +29,15 @@ export const TableContainerHead = ({
   ));
 
   return (
-    <TableHead sx={{ background: '#020202', border: '1px solid #020202' }}>
-      <TableRow>{headerPlug}</TableRow>
-      <TableRow sx={{ border: '1px solid #131313', background: '#131313' }}>
+    <TableHead
+      key="header-head"
+      sx={{ background: '#020202', border: '1px solid #020202' }}
+    >
+      <TableRow key="header-plug">{headerPlug}</TableRow>
+      <TableRow
+        key="header-main"
+        sx={{ border: '1px solid #131313', background: '#131313' }}
+      >
         {headRow}
       </TableRow>
     </TableHead>

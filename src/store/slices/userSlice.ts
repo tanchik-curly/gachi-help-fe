@@ -1,6 +1,10 @@
 import { toast } from 'react-toastify';
 import { AuthResponse, Credentials, auth } from 'api/requests/auth';
-import { Roles, User } from 'interfaces';
+import {
+  RequestedHelpResponse,
+  helpRequests,
+} from 'api/requests/requested-help';
+import { IState, RequestedHelp, Roles, User } from 'interfaces';
 import {
   ActionReducerMapBuilder,
   createAsyncThunk,
@@ -15,10 +19,15 @@ const initialState: User = {
   login: '',
   email: '',
   role: Roles.User,
-  passwordHash: '',
   name: '',
   surname: '',
   patronym: '',
+  requestedHelp: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+  },
 };
 
 export const signInUser = createAsyncThunk(
@@ -34,11 +43,37 @@ export const signInUser = createAsyncThunk(
   },
 );
 
+export const getRequestedHelpByUserId = createAsyncThunk(
+  'user/getRequestedHelpByUserId',
+  async ({
+    userId,
+    limit,
+    skip,
+  }: {
+    userId: number;
+    limit: number;
+    skip: number;
+  }) => {
+    try {
+      const response = await helpRequests.requestHelpByUserId({
+        userId,
+        limit,
+        skip,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Invalid credentials');
+    }
+  },
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
+      console.log(action.payload);
       if (action.payload) return { ...state, ...action.payload };
       return { ...state, ...initialState };
     },
@@ -49,7 +84,7 @@ export const userSlice = createSlice({
         signInUser.fulfilled,
         (state, { payload }: PayloadAction<AuthResponse>) => {
           const userData: User | null = getUserDataFromToken(payload.token);
-          console.log(payload, userData);
+          console.log('userdata', userData);
           if (userData) {
             toast.success('Successfully logged in!');
             return {
@@ -61,6 +96,17 @@ export const userSlice = createSlice({
       )
       .addCase(signInUser.rejected, () => {
         toast.error('Invalid credentails');
+      });
+
+    builder
+      .addCase(
+        getRequestedHelpByUserId.fulfilled,
+        (state, { payload }: PayloadAction<RequestedHelpResponse>) => {
+          state.requestedHelp.list = payload;
+        },
+      )
+      .addCase(getRequestedHelpByUserId.rejected, () => {
+        toast.error('Something is wrong');
       });
   },
 });

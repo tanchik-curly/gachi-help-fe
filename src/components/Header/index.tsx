@@ -10,7 +10,6 @@ const Header: React.FC = () => {
   const user: User = useAppSelector(state => state.user);
   const navigate = useNavigate();
 
-  console.log(user);
   const formatUser = (user: User) => {
     return `Logged in as ${user.name} ${user.surname} as ${user.role}`;
   };

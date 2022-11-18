@@ -7,6 +7,16 @@ export type UsersResponse = {
   itemCount: number;
 };
 
+export type UserResponse = {
+  id: number;
+  login: string;
+  email: string;
+  role: string;
+  name: string;
+  surname: string;
+  patronym: string;
+};
+
 export type UserIdentity = {
   userId: number;
 };
@@ -25,7 +35,7 @@ export const users = {
       }`,
     );
   },
-  getUser({ userId }: UserIdentity): Promise<UsersResponse> {
+  getUser({ userId }: UserIdentity): Promise<UserResponse> {
     return axiosInstance.get(`${routes.USERS_URL}/${userId}`);
   },
 };

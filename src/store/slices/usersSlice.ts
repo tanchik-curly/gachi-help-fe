@@ -4,7 +4,7 @@ import {
   RequestedHelpResponse,
   helpRequests,
 } from 'api/requests/requested-help';
-import { UsersResponse, users } from 'api/requests/users';
+import { UserResponse, UsersResponse, users } from 'api/requests/users';
 import { IState, RequestedHelp, Roles, User } from 'interfaces';
 import {
   ActionReducerMapBuilder,
@@ -15,7 +15,16 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { setAccessToken } from 'utils/authTokens';
 import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 
-const initialState: IState<Partial<User>> = {
+const initialState: IState<Partial<User>> & { selectedUser: UserResponse } = {
+  selectedUser: {
+    id: 0,
+    login: '',
+    email: '',
+    role: '',
+    name: '',
+    surname: '',
+    patronym: '',
+  },
   list: {
     itemCount: 0,
     items: [],
@@ -50,6 +59,21 @@ export const getListOfUsers = createAsyncThunk(
   },
 );
 
+export const getUserById = createAsyncThunk(
+  'users/getUserById',
+  async ({ userId }: { userId: number }) => {
+    try {
+      const response = await users.getUser({
+        userId,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Invalid credentials');
+    }
+  },
+);
+
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -63,6 +87,17 @@ export const usersSlice = createSlice({
         },
       )
       .addCase(getListOfUsers.rejected, () => {
+        toast.error('Something is wrong');
+      });
+
+    builder
+      .addCase(
+        getUserById.fulfilled,
+        (state, { payload }: PayloadAction<UserResponse>) => {
+          state.selectedUser = payload;
+        },
+      )
+      .addCase(getUserById.rejected, () => {
         toast.error('Something is wrong');
       });
   },

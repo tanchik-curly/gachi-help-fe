@@ -1,15 +1,29 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Routes } from 'routes/routesConfig';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectPagination, setItemsCount } from 'store/slices/tableSlice';
 import { getRequestedHelpByUserId } from 'store/slices/userSlice';
 import { getListOfUsers } from 'store/slices/usersSlice';
-import { Box, Typography } from '@mui/material';
+import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
+import {
+  Box,
+  Collapse,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Typography,
+} from '@mui/material';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
+import { TablePaginator } from 'components/Table/TablePaginationContainer/TablePaginationContainer';
 import { homePageTitleRequestedHelps, usersTitle } from 'utils/tableTitles';
 
 export const UsersPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
   const { usersList, count, filters } = useAppSelector(state => ({
     count: state.users.list.itemCount,
@@ -27,34 +41,49 @@ export const UsersPage = () => {
     );
   }, [dispatch, rowsPerPage, currentPage, filters, count]);
 
-  const parsedUsersList = usersList.map(user => (
-    <TableContainerRow
-      id={user!.id!.toString()}
-      key={user!.id}
-      userInfo={`${user!.name} ${user!.surname} ${user!.patronym}`}
-    />
-  ));
+  const handleOnClick = (id?: number) => {
+    navigate(`${Routes.Users}/${id}`);
+  };
 
   return (
     <Box padding={5} width="100%" mt={10}>
       <Typography textAlign="left" sx={{ color: 'white' }} variant="h5">
-        Order info
+        Користувачі
       </Typography>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        sx={{}}
       >
-        {parsedUsersList.length ? (
-          <TableContainerGenerator
-            pagination
-            headerName="Остання запрошені допомоги"
-            count={parsedUsersList.length}
-            tableTitles={usersTitle}
-            tableItems={parsedUsersList}
-          />
+        {usersList.length ? (
+          <>
+            <List
+              sx={{ width: '100%' }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+            >
+              {usersList.map(user => (
+                <ListItemButton
+                  data-key={user.id}
+                  onClick={() => handleOnClick(user?.id)}
+                  sx={{ boxShadow: 1, borderRadius: 2 }}
+                  key={user.id}
+                >
+                  <ListItemText
+                    sx={{
+                      color: 'grey.400',
+                      height: 45,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    primary={`${user.surname} ${user.name} ${user.patronym}`}
+                  />
+                </ListItemButton>
+              ))}
+            </List>
+            <TablePaginator />
+          </>
         ) : (
           <p>No states</p>
         )}

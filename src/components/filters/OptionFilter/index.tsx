@@ -20,15 +20,13 @@ const OptionPicker: React.FC<OptionPickerProps> = ({
     </MenuItem>
   ));
 
-  console.log(value);
-
   return (
     <FormControl variant="filled" sx={{ width: 290 }}>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel sx={{ color: '#828282' }}>{label}</InputLabel>
       <Select
         displayEmpty
-        sx={{ color: '#828282', textAlign: 'left' }}
-        value={options[value?.id]?.name}
+        sx={{ color: 'white', textAlign: 'left' }}
+        value={value?.id}
         onChange={onChange}
       >
         {optionElems}

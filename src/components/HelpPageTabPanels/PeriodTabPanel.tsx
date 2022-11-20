@@ -55,7 +55,6 @@ export const PeriodTabPanel = () => {
       >
         {requestedHelpList.length ? (
           <TableContainerGenerator
-            pagination
             headerName="Остання запрошені допомоги"
             count={requestedHelpList.length}
             tableTitles={homePageTitleRequestedHelps}

@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { AuthResponse, Credentials, auth } from 'api/requests/auth';
 import {
+  CommentsResponse,
   RequestedHelpResponse,
   helpRequests,
 } from 'api/requests/requested-help';
@@ -23,6 +24,12 @@ const initialState: User = {
   surname: '',
   patronym: '',
   requestedHelp: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+  },
+  comments: {
     list: {
       itemCount: 0,
       items: [],
@@ -63,7 +70,32 @@ export const getRequestedHelpByUserId = createAsyncThunk(
       console.log(response);
       return response;
     } catch (error: unknown) {
-      throw Error('Invalid credentials');
+      throw Error('Error when loading help');
+    }
+  },
+);
+
+export const getCommentsByUserId = createAsyncThunk(
+  'user/getCommentsByUserId',
+  async ({
+    userId,
+    limit,
+    skip,
+  }: {
+    userId: number;
+    limit: number;
+    skip: number;
+  }) => {
+    try {
+      const response = await helpRequests.commentsByUserId({
+        userId,
+        limit,
+        skip,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading comments');
     }
   },
 );
@@ -106,7 +138,18 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getRequestedHelpByUserId.rejected, () => {
-        toast.error('Something is wrong');
+        toast.error('Error when loading help');
+      });
+
+    builder
+      .addCase(
+        getCommentsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<CommentsResponse>) => {
+          state.comments.list = payload;
+        },
+      )
+      .addCase(getCommentsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
       });
   },
 });

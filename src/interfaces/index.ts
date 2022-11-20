@@ -7,6 +7,7 @@ export interface User {
   surname: string;
   patronym: string;
   requestedHelp: IState<RequestedHelp>;
+  comments: IState<Comment>;
 }
 
 export enum Roles {
@@ -32,7 +33,7 @@ export interface Table {
   itemsCount: number;
 }
 
-export type Status = 'Canceled' | 'Pending' | 'Approved';
+export type Status = 'Declined' | 'Pending' | 'Approved';
 
 export interface RequestedHelp {
   id: number;
@@ -42,6 +43,13 @@ export interface RequestedHelp {
   createdAt: Date;
 }
 
+export interface Comment {
+  id: number;
+  createDateTime: Date;
+  forumName: string;
+  text: string;
+  author: Partial<User>;
+}
 export interface HelpCategory {
   id: number;
   name: string;

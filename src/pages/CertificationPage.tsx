@@ -42,7 +42,7 @@ export const CertificationPage = () => {
   });
 
   return (
-    <Box width="100%" mt={7}>
+    <Box width="100%" mt={5}>
       <Box
         padding={5}
         display="flex"
@@ -53,11 +53,8 @@ export const CertificationPage = () => {
         <Typography
           sx={{ fontWeight: 'medium', color: '#828282', fontSize: 32 }}
         >
-          Getting Help
+          Сертифікація та працевлаштування
         </Typography>
-        <Button sx={{ width: '200px', height: '52px' }} variant="contained">
-          Profile
-        </Button>
       </Box>
       <Box sx={{ padding: 0, borderBottom: 1, borderColor: 'divider' }}>
         <Tabs

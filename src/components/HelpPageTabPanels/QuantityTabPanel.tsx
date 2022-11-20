@@ -2,19 +2,26 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getCategoriesList } from 'store/slices/statSlice';
 import { selectPagination } from 'store/slices/tableSlice';
-import { getRequestedHelpByUserId } from 'store/slices/userSlice';
+import {
+  getCommentsByUserId,
+  getRequestedHelpByUserId,
+} from 'store/slices/userSlice';
 import { Box, Typography } from '@mui/material';
 import { Status } from 'components/Status';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
-import { homePageTitleRequestedHelps } from 'utils/tableTitles';
+import {
+  homePageTitleComments,
+  homePageTitleRequestedHelps,
+} from 'utils/tableTitles';
 import Filters from './filters/QuantityFilters';
 
 export const QuantityTabPanel = () => {
   const dispatch = useAppDispatch();
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
-  const { lastRequestedHelpList, userId } = useAppSelector(state => ({
-    lastRequestedHelpList: state.user.requestedHelp.list,
+  const { lastUserComments, userId } = useAppSelector(state => ({
+    lastUserComments: state.user.comments.list,
+
     userId: state.user.id,
   }));
 
@@ -22,7 +29,7 @@ export const QuantityTabPanel = () => {
     if (userId) {
       dispatch(getCategoriesList());
       dispatch(
-        getRequestedHelpByUserId({
+        getCommentsByUserId({
           userId,
           limit: 4,
           skip: 0,
@@ -31,20 +38,16 @@ export const QuantityTabPanel = () => {
     }
   }, [dispatch, rowsPerPage, currentPage, userId]);
 
-  const requestedHelpList = lastRequestedHelpList.items.map(
-    requestedHelpItem => (
-      <TableContainerRow
-        id={requestedHelpItem.id.toString()}
-        key={requestedHelpItem.id}
-        commentDate={new Date(requestedHelpItem.createdAt).toLocaleDateString(
-          'en-US',
-        )}
-        userInfo={`${requestedHelpItem.author.name} ${requestedHelpItem.author.surname}`}
-        categoryName={requestedHelpItem.helpCategory.name}
-        categoryStatus={<Status status={requestedHelpItem.status} />}
-      />
-    ),
-  );
+  const commentItems = lastUserComments.items.map(comment => (
+    <TableContainerRow
+      id={comment.id.toString()}
+      key={comment.id}
+      commentDate={new Date(comment.createDateTime).toLocaleDateString('en-US')}
+      commentAuthor={`${comment.author.name} ${comment.author.surname}`}
+      threadName={comment.forumName}
+      commentName={comment.text}
+    />
+  ));
 
   return (
     <Box padding={5}>
@@ -54,18 +57,16 @@ export const QuantityTabPanel = () => {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        sx={{}}
       >
-        {requestedHelpList.length ? (
+        {commentItems.length ? (
           <TableContainerGenerator
-            pagination
             headerName="Остання запрошені допомоги"
-            count={requestedHelpList.length}
-            tableTitles={homePageTitleRequestedHelps}
-            tableItems={requestedHelpList}
+            count={commentItems.length}
+            tableTitles={homePageTitleComments}
+            tableItems={commentItems}
           />
         ) : (
-          <p>No states</p>
+          <p>No comments yet</p>
         )}
       </Box>
     </Box>

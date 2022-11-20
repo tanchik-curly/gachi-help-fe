@@ -1,5 +1,5 @@
 import { axiosInstance } from 'api';
-import { HelpCategory, Status, User } from 'interfaces';
+import { Comment, HelpCategory, Status, User } from 'interfaces';
 import routes from '../../apiRoutes';
 
 export type RequestedHelpResponse = {
@@ -10,6 +10,11 @@ export type RequestedHelpResponse = {
     helpCategory: HelpCategory;
     author: Partial<User>;
   }>;
+  itemCount: number;
+};
+
+export type CommentsResponse = {
+  items: Array<Comment>;
   itemCount: number;
 };
 
@@ -37,5 +42,14 @@ export const helpRequests = {
   },
   requestHelpCategories(): Promise<RequestedHelpResponse> {
     return axiosInstance.get(routes.REQUESTED_HELP_CATEGORIES);
+  },
+  commentsByUserId({
+    userId,
+    skip,
+    limit,
+  }: UserIdentity & Filters): Promise<CommentsResponse> {
+    return axiosInstance.get(
+      `${routes.COMMENT_URL}/${userId}/comments?skip=${skip}&limit=${limit}`,
+    );
   },
 };

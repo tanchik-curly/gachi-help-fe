@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DateRangePicker as DateRangeSelector } from 'rsuite';
 import { Paper } from '@mui/material';
-import 'rsuite/dist/rsuite.min.css';
 
 export const locale = {
   sunday: 'Нд',

@@ -1,47 +1,28 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectPagination } from 'store/slices/tableSlice';
-import { getRequestedHelpByUserId } from 'store/slices/userSlice';
+import {
+  getCommentsByUserId,
+  getRequestedHelpByUserId,
+} from 'store/slices/userSlice';
 import { Box, Typography } from '@mui/material';
 import { Status } from 'components/Status';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
-import { homePageTitleRequestedHelps } from 'utils/tableTitles';
+import {
+  homePageTitleComments,
+  homePageTitleRequestedHelps,
+} from 'utils/tableTitles';
 
 export const HomePage = () => {
-  const commentList = [
-    {
-      id: 1,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-    {
-      id: 2,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-    {
-      id: 3,
-      date: Date.now(),
-      fullName: 'John Doe',
-      threadName: 'Search for Dungeon Master',
-      messageText:
-        'Can someone help me? I am struggling to find decent dungeon master',
-    },
-  ];
-
   const dispatch = useAppDispatch();
-  const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
-  const { lastRequestedHelpList, userId } = useAppSelector(state => ({
-    lastRequestedHelpList: state.user.requestedHelp.list,
-    userId: state.user.id,
-  }));
+  const { lastRequestedHelpList, lastUserComments, userId } = useAppSelector(
+    state => ({
+      lastRequestedHelpList: state.user.requestedHelp.list,
+      lastUserComments: state.user.comments.list,
+      userId: state.user.id,
+    }),
+  );
 
   useEffect(() => {
     if (userId) {
@@ -52,24 +33,27 @@ export const HomePage = () => {
           skip: 0,
         }),
       );
+      dispatch(
+        getCommentsByUserId({
+          userId,
+          limit: 4,
+          skip: 0,
+        }),
+      );
     }
-  }, [dispatch, rowsPerPage, currentPage, userId]);
+  }, [dispatch, userId]);
 
-  console.log(userId);
-  // const commentItems =
-  //   lastRequestedHelpList &&
-  //   lastRequestedHelpList.map(comment => (
-  //     <TableContainerRow
-  //       id={comment.id.toString()}
-  //       key={comment.id}
-  //       commentDate={new Date(comment.date).toLocaleDateString('en-US')}
-  //       commentAuthor={comment.fullName}
-  //       threadName={comment.threadName}
-  //       commentName={comment.messageText}
-  //     />
-  //   ));
+  const commentItems = lastUserComments.items.map(comment => (
+    <TableContainerRow
+      id={comment.id.toString()}
+      key={comment.id}
+      commentDate={new Date(comment.createDateTime).toLocaleDateString('en-US')}
+      commentAuthor={`${comment.author.name} ${comment.author.surname}`}
+      threadName={comment.forumName}
+      commentName={comment.text}
+    />
+  ));
 
-  console.log(lastRequestedHelpList);
   const requestedHelpList = lastRequestedHelpList.items.map(
     requestedHelpItem => (
       <TableContainerRow
@@ -86,27 +70,44 @@ export const HomePage = () => {
   );
 
   return (
-    <Box padding={5} width="100%" mt={10}>
-      <Typography textAlign="left" sx={{ color: 'white' }} variant="h5">
-        Order info
+    <Box padding={5} width="100%" mt={5}>
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+          color: '#828282',
+          textAlign: 'left',
+          fontSize: 32,
+          marginBottom: 2,
+        }}
+      >
+        Домашня сторінка
       </Typography>
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        sx={{}}
       >
         {requestedHelpList.length ? (
           <TableContainerGenerator
-            pagination
-            headerName="Остання запрошені допомоги"
+            headerName="Останні запрошені допомоги"
             count={requestedHelpList.length}
             tableTitles={homePageTitleRequestedHelps}
             tableItems={requestedHelpList}
           />
         ) : (
-          <p>No states</p>
+          <p>No requested help by user yet</p>
+        )}
+        <Box sx={{ height: '50px' }} />
+        {commentItems.length ? (
+          <TableContainerGenerator
+            headerName="Останні коментарі"
+            count={commentItems.length}
+            tableTitles={homePageTitleComments}
+            tableItems={commentItems}
+          />
+        ) : (
+          <p>No comments</p>
         )}
       </Box>
     </Box>

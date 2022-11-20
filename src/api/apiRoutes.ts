@@ -7,6 +7,7 @@ const API_ROUTES = {
   USERS_URL: `${API_BASE_URL}/users`,
   STATISTICS_URL: `${API_BASE_URL}/stat`,
   CATEGORIES_URL: `${API_BASE_URL}/helpcategories`,
+  COMMENT_URL: `${API_BASE_URL}/users`,
 };
 
 export default API_ROUTES;

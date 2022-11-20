@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 
 export enum EStatus {
   Approved = 'Approved',
-  Canceled = 'Canceled',
+  Declined = 'Declined',
   Pending = 'Pending',
 }
 
@@ -13,11 +13,11 @@ const statusMapping: Record<Partial<EStatus>, Record<'en' | 'ua', string>> = {
     ua: 'Підтверджено',
   },
   Pending: {
-    en: 'Approved',
+    en: 'Pending',
     ua: 'Очікується підтвердження',
   },
-  Canceled: {
-    en: 'Approved',
+  Declined: {
+    en: 'Declined',
     ua: 'Скасовано',
   },
 };
@@ -25,7 +25,7 @@ const statusMapping: Record<Partial<EStatus>, Record<'en' | 'ua', string>> = {
 export const Status = ({ status }: { status: `${EStatus}` }) => {
   let color;
   switch (status) {
-    case EStatus.Canceled: {
+    case EStatus.Declined: {
       color = '#ef5350';
       break;
     }

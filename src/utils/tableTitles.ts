@@ -1,8 +1,8 @@
 export const homePageTitleComments = [
-  'Date',
-  'Name',
-  'Thread Name',
-  'Message Name',
+  'Дата',
+  'Імя користувача',
+  'Назва форуму',
+  'Коментар',
 ];
 
 export const homePageTitleRequestedHelps = [

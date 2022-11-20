@@ -31,6 +31,24 @@ export const TablePaginator = () => {
     <Box>
       <TablePagination
         component="div"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#e1d9d9',
+          flexWrap: 'wrap',
+          '& .MuiPaginationItem-root': {
+            color: '#e1d9d9',
+          },
+          '& .MuiTablePagination-toolbar': {
+            flexWrap: 'wrap',
+            padding: 0,
+          },
+          '& .MuiTablePagination-selectRoot': {
+            'margin-right': 0,
+            'margin-left': 0,
+          },
+        }}
         count={+itemsCount}
         page={+currentPage}
         rowsPerPageOptions={rowsPerPageOptions}

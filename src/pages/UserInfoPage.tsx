@@ -90,7 +90,7 @@ export const UserInfoPage = () => {
   );
 
   return (
-    <Box padding={5} width="100%" mt={5}>
+    <Box padding={5} width="100%" sx={{ overflowY: 'hidden' }} mt={5}>
       <Box display="flex" justifyContent="flex-start" margin="20px 0 ">
         <Button variant="contained" onClick={() => navigate(-1)}>
           Назад
@@ -126,27 +126,30 @@ export const UserInfoPage = () => {
           </Stack>
         </Box>
       </Paper>
-      {requestedHelpList.length ? (
-        <TableContainerGenerator
-          headerName="Останні запрошені допомоги"
-          count={requestedHelpList.length}
-          tableTitles={homePageTitleRequestedHelps}
-          tableItems={requestedHelpList}
-        />
-      ) : (
-        <p>No requested help by user yet</p>
-      )}
-      <Box sx={{ height: '50px' }} />
-      {commentItems.length ? (
-        <TableContainerGenerator
-          headerName="Останні коментарі"
-          count={commentItems.length}
-          tableTitles={homePageTitleComments}
-          tableItems={commentItems}
-        />
-      ) : (
-        <p>No comments</p>
-      )}
+      <Box mt={5}>
+        {requestedHelpList.length ? (
+          <TableContainerGenerator
+            headerName="Останні запрошені допомоги"
+            count={requestedHelpList.length}
+            tableTitles={homePageTitleRequestedHelps}
+            tableItems={requestedHelpList}
+          />
+        ) : (
+          <p>No requested help by user yet</p>
+        )}
+      </Box>
+      <Box mt={5}>
+        {commentItems.length ? (
+          <TableContainerGenerator
+            headerName="Останні коментарі"
+            count={commentItems.length}
+            tableTitles={homePageTitleComments}
+            tableItems={commentItems}
+          />
+        ) : (
+          <p>No comments</p>
+        )}
+      </Box>
     </Box>
   );
 };

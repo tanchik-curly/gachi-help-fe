@@ -46,8 +46,16 @@ export const UsersPage = () => {
   };
 
   return (
-    <Box padding={5} width="100%" mt={10}>
-      <Typography textAlign="left" sx={{ color: 'white' }} variant="h5">
+    <Box padding={5} width="100%" mt={5}>
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+          color: '#828282',
+          textAlign: 'left',
+          fontSize: 32,
+          marginBottom: 2,
+        }}
+      >
         Користувачі
       </Typography>
       <Box

@@ -7,17 +7,16 @@ import { FilterClear } from 'components/filters/ClearFilter';
 import OptionPicker from 'components/filters/OptionFilter';
 
 function Filters() {
-  const dispatch = useAppDispatch();
-
-  const { items, selectedCategory } = useAppSelector(
-    state => state.stat.categories,
+  const { items } = useAppSelector(state => state.stat.categories);
+  const [selectedCategory, setSelectedCategory] = useState<HelpCategory>(
+    items[0] || null,
   );
 
   const handleChange = (event: SelectChangeEvent) => {
-    dispatch(setActiveCategory(items[+event.target.value]));
+    console.log(event.target.value);
+    setSelectedCategory(items[(event.target.value as unknown as number) - 1]);
   };
 
-  console.log(selectedCategory);
   return (
     <Box
       display="flex"

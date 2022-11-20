@@ -22,6 +22,7 @@ import { UserInfoPage } from 'pages/UserInfoPage';
 import { UsersPage } from 'pages/UsersPage';
 import { getAccessToken } from 'utils/authTokens';
 import { getUserDataFromToken } from 'utils/getUserDataFromToken';
+import 'rsuite/dist/rsuite.min.css';
 import './App.css';
 
 function App() {

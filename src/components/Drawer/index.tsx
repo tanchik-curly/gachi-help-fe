@@ -10,8 +10,13 @@ import {
   Drawer as MUIDrawer,
   Paper,
   Typography,
+  styled,
 } from '@mui/material';
 import { getMenuItems } from 'utils/getMenuItems';
+
+const StyledLink = styled(Link)({
+  textTransform: 'none',
+});
 
 export const Drawer = () => {
   const { pathname } = useLocation();
@@ -19,12 +24,13 @@ export const Drawer = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const returnedList = (pathTitle: string, pathTo: string, PathIcon: any) => (
     <ListItemButton
-      component={Link}
+      component={StyledLink}
       key={pathTo}
       to={pathTo}
       selected={pathname.includes(pathTo)}
       sx={{
         color: 'white',
+        textTransform: 'none !important',
         '&.Mui-selected': {
           color: '#5C6BC0',
           background: 'none',
@@ -51,12 +57,6 @@ export const Drawer = () => {
   return (
     <Paper
       elevation={5}
-      // PaperProps={{
-      //   sx: {
-      //     backgroundColor: '#242424',
-      //     color: 'white',
-      //   },
-      // }}
       sx={{
         zIndex: '1250 !important',
         width: 400,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAppSelector } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { resetPagination } from 'store/slices/tableSlice';
 import {
   Divider,
   List,
@@ -20,10 +21,12 @@ const StyledLink = styled(Link)({
 
 export const Drawer = () => {
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
   const role = useAppSelector(state => state.user.role);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const returnedList = (pathTitle: string, pathTo: string, PathIcon: any) => (
     <ListItemButton
+      onClick={() => dispatch(resetPagination())}
       component={StyledLink}
       key={pathTo}
       to={pathTo}

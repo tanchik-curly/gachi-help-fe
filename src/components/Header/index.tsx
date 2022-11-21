@@ -3,18 +3,31 @@ import { useNavigate } from 'react-router-dom';
 import { Roles, User } from 'interfaces';
 import { useAppSelector } from 'store/hooks';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  IconButton,
+  MenuItem,
+  Stack,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import { removeAccessToken } from 'utils/authTokens';
+
+const mapper = {
+  [Roles.Admin]: 'Адміністратор',
+  [Roles.Worker]: 'Фахівець',
+  [Roles.User]: 'Користувач',
+};
 
 const Header: React.FC = () => {
   const user: User = useAppSelector(state => state.user);
   const navigate = useNavigate();
 
   const formatUser = (user: User) => {
-    return `Logged in as ${user.name} ${user.surname} as ${user.role}`;
+    return `Увійшов як ${user.name} ${user.surname} - ${mapper[user.role]}`;
   };
 
-  // todo: implement logging out
   const logoutHandler = () => {
     removeAccessToken();
     navigate('/login');
@@ -29,7 +42,35 @@ const Header: React.FC = () => {
           sx={{ width: '100%' }}
           justifyContent="space-between"
         >
-          <Typography>Gachi help</Typography>
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <MenuItem onClick={() => navigate('/main')}>
+              <Typography variant="h5" mr={8}>
+                Gachi Help
+              </Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/main')}>
+              <Typography fontSize={14}>Комунікаційний хаб</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/main')}>
+              <Typography fontSize={14}>
+                Центр інформації користувача
+              </Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/main')}>
+              <Typography fontSize={14}>Кабінет користувача</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/main')}>
+              <Typography fontSize={14}>Сервіс обліку за ознаками</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/main')}>
+              <Typography fontSize={14}>Формування пакету допомоги</Typography>
+            </MenuItem>
+            <MenuItem onClick={() => navigate('/home')}>
+              <Typography fontSize={14}>
+                Модуль аналізу та статистики
+              </Typography>
+            </MenuItem>
+          </Box>
           <Stack flexDirection="row" alignItems="center">
             <Typography>{formatUser(user)}</Typography>
             <IconButton onClick={logoutHandler}>

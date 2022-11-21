@@ -17,12 +17,12 @@ import { CertificationPage } from 'pages/CertificationPage';
 import { HelpPage } from 'pages/HelpPage';
 import { HomePage } from 'pages/HomePage';
 import { LoginPage } from 'pages/LoginPage';
+import { Plug } from 'pages/Plug';
 import { SocialInfoPage } from 'pages/SocialInfoPage';
 import { UserInfoPage } from 'pages/UserInfoPage';
 import { UsersPage } from 'pages/UsersPage';
 import { getAccessToken } from 'utils/authTokens';
 import { getUserDataFromToken } from 'utils/getUserDataFromToken';
-import 'rsuite/dist/rsuite.min.css';
 import './App.css';
 
 function App() {
@@ -37,6 +37,7 @@ function App() {
       <Router>
         <Routes>
           <Route path={Paths.Login} element={<LoginPage />} />
+          <Route path={Paths.Main} element={<Plug />} />
           <Route
             element={
               <NoAuthTokenRestriction>

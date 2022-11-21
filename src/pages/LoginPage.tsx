@@ -26,7 +26,7 @@ export const LoginPage = () => {
     event.preventDefault();
     dispatch(signInUser({ email: userData.login, password: userData.password }))
       .unwrap()
-      .then(() => navigate('/home'));
+      .then(() => navigate('/main'));
   };
 
   const handleChangeData = (event: React.ChangeEvent<HTMLInputElement>) => {

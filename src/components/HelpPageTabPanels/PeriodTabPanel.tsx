@@ -8,6 +8,7 @@ import TableContainerGenerator from 'components/Table/TableContainer/TableContai
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import { homePageTitleRequestedHelps } from 'utils/tableTitles';
 import Filters from './filters/PeriodFilters';
+import 'rsuite/dist/rsuite.min.css';
 
 export const PeriodTabPanel = () => {
   const dispatch = useAppDispatch();

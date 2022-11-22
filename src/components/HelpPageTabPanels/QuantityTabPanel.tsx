@@ -4,17 +4,15 @@ import { getCategoriesList } from 'store/slices/statSlice';
 import { selectPagination } from 'store/slices/tableSlice';
 import {
   getCommentsByUserId,
-  getRequestedHelpByUserId,
 } from 'store/slices/userSlice';
 import { Box, Typography } from '@mui/material';
-import { Status } from 'components/Status';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import {
   homePageTitleComments,
-  homePageTitleRequestedHelps,
 } from 'utils/tableTitles';
 import Filters from './filters/QuantityFilters';
+import { CategoryDonutChart } from '../Charts/CategoryDonutChart';
 
 export const QuantityTabPanel = () => {
   const dispatch = useAppDispatch();
@@ -52,6 +50,7 @@ export const QuantityTabPanel = () => {
   return (
     <Box padding={5}>
       <Filters />
+      <CategoryDonutChart category={1} user={userId}/>
       <Box
         display="flex"
         flexDirection="column"

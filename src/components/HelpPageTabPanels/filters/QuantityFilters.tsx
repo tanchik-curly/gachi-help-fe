@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { HelpCategory } from 'interfaces';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { clearStatFilters, setActiveCategory } from 'store/slices/statSlice';
 import { Box, SelectChangeEvent } from '@mui/material';
-import { FilterClear } from 'components/filters/ClearFilter';
 import OptionPicker from 'components/filters/OptionFilter';
 
 function Filters() {

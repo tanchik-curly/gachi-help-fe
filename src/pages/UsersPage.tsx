@@ -19,6 +19,7 @@ import {
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import { TablePaginator } from 'components/Table/TablePaginationContainer/TablePaginationContainer';
+import Filters from 'components/UsersFilters';
 import { homePageTitleRequestedHelps, usersTitle } from 'utils/tableTitles';
 
 export const UsersPage = () => {
@@ -35,6 +36,7 @@ export const UsersPage = () => {
     dispatch(setItemsCount(count));
     dispatch(
       getListOfUsers({
+        search: filters?.search,
         limit: rowsPerPage,
         skip: currentPage * rowsPerPage,
       }),
@@ -64,6 +66,7 @@ export const UsersPage = () => {
         alignItems="center"
         justifyContent="center"
       >
+        <Filters />
         {usersList.length ? (
           <>
             <List

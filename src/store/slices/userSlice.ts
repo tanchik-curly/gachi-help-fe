@@ -5,6 +5,11 @@ import {
   RequestedHelpResponse,
   helpRequests,
 } from 'api/requests/requested-help';
+import {
+  CertificationHistoryResponse,
+  UserSocialStatisticsResponse,
+  statistics,
+} from 'api/requests/statistics';
 import { IState, RequestedHelp, Roles, User } from 'interfaces';
 import {
   ActionReducerMapBuilder,
@@ -34,6 +39,18 @@ const initialState: User = {
       itemCount: 0,
       items: [],
     },
+  },
+  certifications: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+  },
+  socialStats: {
+    votesCount: 0,
+    closedDiscussionsCount: 0,
+    answearsCount: 0,
+    carma: 0,
   },
 };
 
@@ -75,6 +92,30 @@ export const getRequestedHelpByUserId = createAsyncThunk(
   },
 );
 
+export const getCertificationsByUserId = createAsyncThunk(
+  'user/getCertificationsByUserId',
+  async ({
+    userId,
+    limit,
+    skip,
+  }: {
+    userId: number;
+    limit: number;
+    skip: number;
+  }) => {
+    try {
+      const response = await statistics.getCertificationsHistoryByUserId({
+        userId,
+        limit,
+        skip,
+      });
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading help');
+    }
+  },
+);
+
 export const getCommentsByUserId = createAsyncThunk(
   'user/getCommentsByUserId',
   async ({
@@ -91,6 +132,21 @@ export const getCommentsByUserId = createAsyncThunk(
         userId,
         limit,
         skip,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading comments');
+    }
+  },
+);
+
+export const getSocialStatsByUserId = createAsyncThunk(
+  'user/getSocialStatsByUserId',
+  async ({ userId }: { userId: number }) => {
+    try {
+      const response = await statistics.getSocialStatisticsByUserId({
+        userId,
       });
       console.log(response);
       return response;
@@ -149,6 +205,28 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getCommentsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
+      });
+
+    builder
+      .addCase(
+        getCertificationsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<CertificationHistoryResponse>) => {
+          state.certifications.list = payload;
+        },
+      )
+      .addCase(getCertificationsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
+      });
+
+    builder
+      .addCase(
+        getSocialStatsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<UserSocialStatisticsResponse>) => {
+          state.socialStats = payload;
+        },
+      )
+      .addCase(getSocialStatsByUserId.rejected, () => {
         toast.error('Erorr while fetching the comments');
       });
   },

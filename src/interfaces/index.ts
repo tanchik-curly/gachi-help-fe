@@ -8,6 +8,8 @@ export interface User {
   patronym: string;
   requestedHelp: IState<RequestedHelp>;
   comments: IState<Comment>;
+  certifications: IState<Certification>;
+  socialStats: SocialStats;
 }
 
 export enum Roles {
@@ -54,6 +56,21 @@ export interface HelpCategory {
   id: number;
   name: string;
 }
+
+export type Certification = {
+  id: number;
+  certificatedUserId: number;
+  name: string;
+  description: string;
+  createdAt: Date;
+};
+
+export type SocialStats = {
+  votesCount: number;
+  closedDiscussionsCount: number;
+  answearsCount: number;
+  carma: number;
+};
 
 export type Group = 'Approved' | 'Declined';
 

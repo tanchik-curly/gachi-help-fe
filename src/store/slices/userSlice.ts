@@ -7,6 +7,7 @@ import {
 } from 'api/requests/requested-help';
 import {
   CertificationHistoryResponse,
+  JobApplicationResponse,
   UserSocialStatisticsResponse,
   statistics,
 } from 'api/requests/statistics';
@@ -46,6 +47,8 @@ const initialState: User = {
       items: [],
     },
   },
+  jobApplications: [],
+  proposedJobApplications: [],
   socialStats: {
     votesCount: 0,
     closedDiscussionsCount: 0,
@@ -87,6 +90,56 @@ export const getRequestedHelpByUserId = createAsyncThunk(
         userId,
         limit,
         skip,
+        dateFrom,
+        dateTo,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading help');
+    }
+  },
+);
+
+export const getProposedJobApplicationsByUserId = createAsyncThunk(
+  'user/getProposedJobApplicationsByUserId',
+  async ({
+    userId,
+    dateFrom,
+    dateTo,
+  }: {
+    userId: number;
+    dateFrom: string;
+    dateTo: string;
+  }) => {
+    try {
+      const response = await statistics.getProposedJobApplications({
+        userId,
+        dateFrom,
+        dateTo,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading help');
+    }
+  },
+);
+
+export const getJobApplicationsbyUserId = createAsyncThunk(
+  'user/getJobApplicationsbyUserId',
+  async ({
+    userId,
+    dateFrom,
+    dateTo,
+  }: {
+    userId: number;
+    dateFrom: string;
+    dateTo: string;
+  }) => {
+    try {
+      const response = await statistics.getJobApplicationStatByUserId({
+        userId,
         dateFrom,
         dateTo,
       });
@@ -222,7 +275,7 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getCertificationsByUserId.rejected, () => {
-        toast.error('Erorr while fetching the comments');
+        toast.error('Erorr while fetching the certifications');
       });
 
     builder
@@ -233,6 +286,28 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getSocialStatsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the social stats');
+      });
+
+    builder
+      .addCase(
+        getProposedJobApplicationsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<JobApplicationResponse>) => {
+          state.proposedJobApplications = payload;
+        },
+      )
+      .addCase(getProposedJobApplicationsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
+      });
+
+    builder
+      .addCase(
+        getJobApplicationsbyUserId.fulfilled,
+        (state, { payload }: PayloadAction<JobApplicationResponse>) => {
+          state.jobApplications = payload;
+        },
+      )
+      .addCase(getJobApplicationsbyUserId.rejected, () => {
         toast.error('Erorr while fetching the comments');
       });
   },

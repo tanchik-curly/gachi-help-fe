@@ -8,10 +8,7 @@ import {
 import { Box, Typography } from '@mui/material';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
-import {
-  homePageTitleComments,
-  homePageTitleRequestedHelps,
-} from 'utils/tableTitles';
+import { homePageTitleComments } from 'utils/tableTitles';
 
 export const SocialInfoPage = () => {
   const dispatch = useAppDispatch();

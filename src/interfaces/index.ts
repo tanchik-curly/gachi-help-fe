@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface User {
   id: number;
   login: string;
@@ -25,8 +26,8 @@ export interface IState<T> {
   };
   filters?: {
     search?: string;
-    dateFrom?: Date;
-    dateTo?: Date;
+    dateFrom?: string;
+    dateTo?: string;
   };
 }
 

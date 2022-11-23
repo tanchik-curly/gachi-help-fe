@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentPage } from 'store/slices/tableSlice';
@@ -14,10 +15,11 @@ export const FilterDateRangePicker = ({
 
   const setDateRangeFilter = (date: any) => {
     dispatch(setCurrentPage(0));
+    console.log(date);
     dispatch(
       setFilterValue({
-        dateFrom: date ? date[0] : '',
-        dateTo: date ? date[1] : '',
+        dateFrom: date ? new Date(date[0]).toISOString() : '',
+        dateTo: date ? new Date(date[1]).toISOString() : '',
       }),
     );
   };

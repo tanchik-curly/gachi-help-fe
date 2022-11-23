@@ -1,19 +1,8 @@
 import { toast } from 'react-toastify';
-import { AuthResponse, Credentials, auth } from 'api/requests/auth';
-import {
-  RequestedHelpResponse,
-  helpRequests,
-} from 'api/requests/requested-help';
 import { UserResponse, UsersResponse, users } from 'api/requests/users';
-import { IState, RequestedHelp, Roles, User } from 'interfaces';
-import {
-  ActionReducerMapBuilder,
-  createAsyncThunk,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { IState, User } from 'interfaces';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { setAccessToken } from 'utils/authTokens';
-import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 
 const initialState: IState<Partial<User>> & { selectedUser: UserResponse } = {
   selectedUser: {

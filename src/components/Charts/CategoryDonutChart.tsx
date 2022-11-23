@@ -6,14 +6,13 @@ import { getStatForHelpRequestByCategory } from 'store/slices/statSlice';
 
 interface CategoryDonutChartProps {
   user: number;
-  category: number;
+  category: number | undefined;
 }
 
 export const CategoryDonutChart = (props: CategoryDonutChartProps) => {
   const dispatch = useAppDispatch();
-  const { requestStat, userId } = useAppSelector(state => ({
-    requestStat: state.stat.requestedHelpStat,
-    userId: state.user.id,
+  const { requestStat } = useAppSelector(state => ({
+    requestStat: state.stat.requestedHelpStat
   }));
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export const CategoryDonutChart = (props: CategoryDonutChartProps) => {
       }));
     }
         
-  }, [dispatch]);
+  }, [props.category]);
 
   const ser = requestStat.items.map(elem => elem.quantity);
   const lab = requestStat.items.map(elem => elem.group);
@@ -43,7 +42,7 @@ export const CategoryDonutChart = (props: CategoryDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser}/>
+        <DonutChart labels={lab} series={ser} total={ser.reduce((a: number, b: number) => a + b, 0)}/>
       </Box>
     </Box>
   );

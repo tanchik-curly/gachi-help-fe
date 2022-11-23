@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import { DonutChart } from './DonutChart';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getStatForHelpRequestByCategory } from 'store/slices/statSlice';
-import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 interface SocialDonutChartProps {
   user: number;
@@ -57,7 +56,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser}/>
+        <DonutChart labels={lab} series={ser} total={3}/>
       </Box>
     </Box>
   );

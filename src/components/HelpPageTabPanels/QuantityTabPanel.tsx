@@ -12,7 +12,6 @@ import {
   homePageTitleComments,
 } from 'utils/tableTitles';
 import Filters from './filters/QuantityFilters';
-import { CategoryDonutChart } from '../Charts/CategoryDonutChart';
 
 export const QuantityTabPanel = () => {
   const dispatch = useAppDispatch();
@@ -50,7 +49,6 @@ export const QuantityTabPanel = () => {
   return (
     <Box padding={5}>
       <Filters />
-      <CategoryDonutChart category={1} user={userId}/>
       <Box
         display="flex"
         flexDirection="column"

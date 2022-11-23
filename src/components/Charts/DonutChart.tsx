@@ -1,14 +1,19 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Box } from '@mui/material';
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
 interface DonutChartProps {
   labels: string[];
   series: number[];
+  total: number;
 }
 
 export const DonutChart = (props: DonutChartProps) => {
+
+  const checkDataAvailability = (series: number[]) => {
+    return series.filter(elem => elem !== 0).length !== 0;
+  }
 
   const options: ApexOptions = {
     chart: {
@@ -46,7 +51,7 @@ export const DonutChart = (props: DonutChartProps) => {
             total: {
               show: true,
               label: "Total",
-              formatter: () => "" + props.series.reduce((a, b) => a + b, 0)
+              formatter: () => "" + props.total
             }
           }
         }
@@ -66,7 +71,7 @@ export const DonutChart = (props: DonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <ReactApexChart options={options} series={props.series} type="donut" width={380} />
+        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props.series} type="donut" width={380} /> : "NO DATA"}
       </Box>
     </Box>
   );

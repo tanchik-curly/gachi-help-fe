@@ -10,7 +10,7 @@ import {
   UserSocialStatisticsResponse,
   statistics,
 } from 'api/requests/statistics';
-import { IState, RequestedHelp, Roles, User } from 'interfaces';
+import { Roles, User } from 'interfaces';
 import {
   ActionReducerMapBuilder,
   createAsyncThunk,
@@ -73,16 +73,22 @@ export const getRequestedHelpByUserId = createAsyncThunk(
     userId,
     limit,
     skip,
+    dateFrom,
+    dateTo,
   }: {
     userId: number;
     limit: number;
     skip: number;
+    dateFrom: string;
+    dateTo: string;
   }) => {
     try {
       const response = await helpRequests.requestHelpByUserId({
         userId,
         limit,
         skip,
+        dateFrom,
+        dateTo,
       });
       console.log(response);
       return response;

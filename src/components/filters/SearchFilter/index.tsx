@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { Search as SearchIcon, TextFields } from '@mui/icons-material';
-import { IconButton, InputBase, Paper, TextField } from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
+import { IconButton, Paper, TextField } from '@mui/material';
 
 export const Search = ({
   value,

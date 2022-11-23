@@ -25,6 +25,8 @@ export type UserIdentity = {
 export type Filters = {
   skip: number;
   limit: number;
+  dateFrom?: string;
+  dateTo?: string;
 };
 
 export const helpRequests = {
@@ -32,11 +34,21 @@ export const helpRequests = {
     userId,
     skip,
     limit,
+    dateFrom,
+    dateTo,
   }: UserIdentity & Filters): Promise<RequestedHelpResponse> {
+    const dateParams = new URLSearchParams({
+      from: dateFrom || '',
+      to: dateTo || '',
+    }).toString();
+
     return axiosInstance.get(
-      `${routes.REQUESTED_HELP_URL}/${userId}?skip=${skip}&limit=${limit}`,
+      `${routes.REQUESTED_HELP_URL}/${userId}?skip=${skip}&limit=${limit}&${
+        dateFrom || dateTo ? dateParams : ''
+      }`,
     );
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   requestHelp(): Promise<any> {
     return axiosInstance.get(`${routes.REQUESTED_HELP_URL}`);
   },

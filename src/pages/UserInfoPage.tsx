@@ -10,8 +10,6 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
   Chip,
   Paper,
   Stack,
@@ -49,6 +47,8 @@ export const UserInfoPage = () => {
           userId: +userId || 0,
           limit: 4,
           skip: 0,
+          dateFrom: '',
+          dateTo: '',
         }),
       );
       dispatch(

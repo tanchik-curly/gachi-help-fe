@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { useAppDispatch } from 'store/hooks';
 import { setCurrentPage } from 'store/slices/tableSlice';

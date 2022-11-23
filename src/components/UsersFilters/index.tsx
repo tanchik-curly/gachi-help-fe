@@ -1,10 +1,7 @@
 import React from 'react';
 import { useAppSelector } from 'store/hooks';
-import { clearStatFilters, setStatFilters } from 'store/slices/statSlice';
 import { setUsersFilters } from 'store/slices/usersSlice';
 import { Box } from '@mui/material';
-import { FilterClear } from 'components/filters/ClearFilter';
-import { FilterDateRangePicker } from 'utils/helpers/DatePickerFilter';
 import { SearchFilter } from './SerarchFilter';
 
 function Filters() {
@@ -23,6 +20,7 @@ function Filters() {
       <SearchFilter
         setFilterValue={setUsersFilters}
         value={filters?.search || ''}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         selectorFunc={(selector: any) => ({ search: selector })}
       />
     </Box>

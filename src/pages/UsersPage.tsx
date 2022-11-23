@@ -3,24 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Routes } from 'routes/routesConfig';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectPagination, setItemsCount } from 'store/slices/tableSlice';
-import { getRequestedHelpByUserId } from 'store/slices/userSlice';
 import { getListOfUsers } from 'store/slices/usersSlice';
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material';
 import {
   Box,
-  Collapse,
   List,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  ListSubheader,
   Typography,
 } from '@mui/material';
-import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
-import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import { TablePaginator } from 'components/Table/TablePaginationContainer/TablePaginationContainer';
 import Filters from 'components/UsersFilters';
-import { homePageTitleRequestedHelps, usersTitle } from 'utils/tableTitles';
 
 export const UsersPage = () => {
   const dispatch = useAppDispatch();

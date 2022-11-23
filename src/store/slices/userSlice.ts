@@ -21,6 +21,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { setAccessToken } from 'utils/authTokens';
 import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 
+const initialFilters = {
+  dateFrom: '',
+  dateTo: '',
+};
+
 const initialState: User = {
   id: 0,
   login: '',
@@ -34,11 +39,19 @@ const initialState: User = {
       itemCount: 0,
       items: [],
     },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
   },
   comments: {
     list: {
       itemCount: 0,
       items: [],
+    },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
     },
   },
   certifications: {
@@ -46,9 +59,31 @@ const initialState: User = {
       itemCount: 0,
       items: [],
     },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
   },
-  jobApplications: [],
-  proposedJobApplications: [],
+  jobApplications: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
+  },
+  proposedJobApplications: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
+  },
   socialStats: {
     votesCount: 0,
     closedDiscussionsCount: 0,
@@ -224,6 +259,30 @@ export const userSlice = createSlice({
       if (action.payload) return { ...state, ...action.payload };
       return { ...state, ...initialState };
     },
+    clearApplicationFilters: state => {
+      state.jobApplications.filters = initialFilters;
+      state.proposedJobApplications.filters = initialFilters;
+    },
+    setApplicationFilters: (state, action) => ({
+      ...state,
+      jobApplications: {
+        ...state.jobApplications,
+        filters: {
+          ...state.jobApplications.filters,
+          ...action.payload,
+        },
+      },
+    }),
+    setProposedJobApplicationFilters: (state, action) => ({
+      ...state,
+      proposedJobApplications: {
+        ...state.proposedJobApplications,
+        filters: {
+          ...state.proposedJobApplications.filters,
+          ...action.payload,
+        },
+      },
+    }),
   },
   extraReducers: (builder: ActionReducerMapBuilder<User>) => {
     builder
@@ -293,7 +352,8 @@ export const userSlice = createSlice({
       .addCase(
         getProposedJobApplicationsByUserId.fulfilled,
         (state, { payload }: PayloadAction<JobApplicationResponse>) => {
-          state.proposedJobApplications = payload;
+          state.proposedJobApplications.list.items = payload;
+          state.proposedJobApplications.list.itemCount = payload.length;
         },
       )
       .addCase(getProposedJobApplicationsByUserId.rejected, () => {
@@ -304,7 +364,8 @@ export const userSlice = createSlice({
       .addCase(
         getJobApplicationsbyUserId.fulfilled,
         (state, { payload }: PayloadAction<JobApplicationResponse>) => {
-          state.jobApplications = payload;
+          state.jobApplications.list.items = payload;
+          state.jobApplications.list.itemCount = payload.length;
         },
       )
       .addCase(getJobApplicationsbyUserId.rejected, () => {
@@ -313,6 +374,11 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const {
+  setUser,
+  clearApplicationFilters,
+  setApplicationFilters,
+  setProposedJobApplicationFilters,
+} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -44,10 +44,12 @@ export const statistics = {
     userId,
     category,
   }: StatForHelpRequestsByUser): Promise<HelpRequestStatResponse> {
+    let catEnding = "";
+    if (category) {
+      catEnding = `&categoryId=${category}`
+    }
     return axiosInstance.get(
-      `${routes.STATISTICS_URL}/${userId}/help-requests?by=category${
-        category && `&categoryId=${category}`
-      }`,
+      `${routes.STATISTICS_URL}/${userId}/help-requests?by=category` + catEnding,
     );
   },
   getStatisticsForHelpRequestsByUserForPeriod({

@@ -9,6 +9,7 @@ import { Box, Typography } from '@mui/material';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
 import { homePageTitleComments } from 'utils/tableTitles';
+import { SocialDonutChart } from '../components/Charts/SocialDonutChart';
 
 export const SocialInfoPage = () => {
   const dispatch = useAppDispatch();
@@ -68,6 +69,7 @@ export const SocialInfoPage = () => {
         alignItems="center"
         justifyContent="center"
       >
+        <SocialDonutChart user={userId}/>
         {commentItems.length ? (
           <TableContainerGenerator
             pagination

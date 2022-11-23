@@ -7,6 +7,7 @@ import {
 } from 'api/requests/requested-help';
 import {
   CertificationHistoryResponse,
+  JobApplicationResponse,
   UserSocialStatisticsResponse,
   statistics,
 } from 'api/requests/statistics';
@@ -19,6 +20,11 @@ import {
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { setAccessToken } from 'utils/authTokens';
 import { getUserDataFromToken } from 'utils/getUserDataFromToken';
+
+const initialFilters = {
+  dateFrom: '',
+  dateTo: '',
+};
 
 const initialState: User = {
   id: 0,
@@ -33,17 +39,49 @@ const initialState: User = {
       itemCount: 0,
       items: [],
     },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
   },
   comments: {
     list: {
       itemCount: 0,
       items: [],
     },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
   },
   certifications: {
     list: {
       itemCount: 0,
       items: [],
+    },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
+  },
+  jobApplications: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
+    },
+  },
+  proposedJobApplications: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+    filters: {
+      dateFrom: '',
+      dateTo: '',
     },
   },
   socialStats: {
@@ -87,6 +125,56 @@ export const getRequestedHelpByUserId = createAsyncThunk(
         userId,
         limit,
         skip,
+        dateFrom,
+        dateTo,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading help');
+    }
+  },
+);
+
+export const getProposedJobApplicationsByUserId = createAsyncThunk(
+  'user/getProposedJobApplicationsByUserId',
+  async ({
+    userId,
+    dateFrom,
+    dateTo,
+  }: {
+    userId: number;
+    dateFrom: string;
+    dateTo: string;
+  }) => {
+    try {
+      const response = await statistics.getProposedJobApplications({
+        userId,
+        dateFrom,
+        dateTo,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading help');
+    }
+  },
+);
+
+export const getJobApplicationsbyUserId = createAsyncThunk(
+  'user/getJobApplicationsbyUserId',
+  async ({
+    userId,
+    dateFrom,
+    dateTo,
+  }: {
+    userId: number;
+    dateFrom: string;
+    dateTo: string;
+  }) => {
+    try {
+      const response = await statistics.getJobApplicationStatByUserId({
+        userId,
         dateFrom,
         dateTo,
       });
@@ -171,6 +259,30 @@ export const userSlice = createSlice({
       if (action.payload) return { ...state, ...action.payload };
       return { ...state, ...initialState };
     },
+    clearApplicationFilters: state => {
+      state.jobApplications.filters = initialFilters;
+      state.proposedJobApplications.filters = initialFilters;
+    },
+    setApplicationFilters: (state, action) => ({
+      ...state,
+      jobApplications: {
+        ...state.jobApplications,
+        filters: {
+          ...state.jobApplications.filters,
+          ...action.payload,
+        },
+      },
+    }),
+    setProposedJobApplicationFilters: (state, action) => ({
+      ...state,
+      proposedJobApplications: {
+        ...state.proposedJobApplications,
+        filters: {
+          ...state.proposedJobApplications.filters,
+          ...action.payload,
+        },
+      },
+    }),
   },
   extraReducers: (builder: ActionReducerMapBuilder<User>) => {
     builder
@@ -222,7 +334,7 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getCertificationsByUserId.rejected, () => {
-        toast.error('Erorr while fetching the comments');
+        toast.error('Erorr while fetching the certifications');
       });
 
     builder
@@ -233,11 +345,40 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getSocialStatsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the social stats');
+      });
+
+    builder
+      .addCase(
+        getProposedJobApplicationsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<JobApplicationResponse>) => {
+          state.proposedJobApplications.list.items = payload;
+          state.proposedJobApplications.list.itemCount = payload.length;
+        },
+      )
+      .addCase(getProposedJobApplicationsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
+      });
+
+    builder
+      .addCase(
+        getJobApplicationsbyUserId.fulfilled,
+        (state, { payload }: PayloadAction<JobApplicationResponse>) => {
+          state.jobApplications.list.items = payload;
+          state.jobApplications.list.itemCount = payload.length;
+        },
+      )
+      .addCase(getJobApplicationsbyUserId.rejected, () => {
         toast.error('Erorr while fetching the comments');
       });
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const {
+  setUser,
+  clearApplicationFilters,
+  setApplicationFilters,
+  setProposedJobApplicationFilters,
+} = userSlice.actions;
 
 export default userSlice.reducer;

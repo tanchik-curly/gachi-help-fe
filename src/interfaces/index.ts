@@ -11,6 +11,8 @@ export interface User {
   comments: IState<Comment>;
   certifications: IState<Certification>;
   socialStats: SocialStats;
+  jobApplications: IState<JobApplication>;
+  proposedJobApplications: IState<JobApplication>;
 }
 
 export enum Roles {
@@ -24,7 +26,7 @@ export interface IState<T> {
     itemCount: number;
     items: T[];
   };
-  filters?: {
+  filters: {
     search?: string;
     dateFrom?: string;
     dateTo?: string;
@@ -43,6 +45,18 @@ export interface RequestedHelp {
   helpCategory: HelpCategory;
   author: Partial<User>;
   status: Status;
+  createdAt: Date;
+}
+
+export interface JobApplication {
+  id: number;
+  applicationType: {
+    id: number;
+    name: string;
+  };
+  name: string;
+  description: string;
+  salary: number;
   createdAt: Date;
 }
 

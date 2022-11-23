@@ -1,39 +1,32 @@
-import { LineChart } from 'components/Charts/LineChart';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { getProposedJobApplicationsByUserId } from 'store/slices/userSlice';
+import Filters from 'components/ApplicationsTabPanelFilters/ApplicationHistoryTabPanelFilters';
 
 export const ApplicationsHistoryTabPanel = () => {
-  const ser: ApexAxisChartSeries = [{
-    data: [
-      [1327359600000, 1],
-      [1327446000000, 1],
-      [1327532400000,2],
-      [1327618800000,1],
-      [1327878000000,3],
-      [1327964400000,1],
-      [1328050800000,2],
-      [1328137200000,1],
-      [1328223600000,1],
-      [1328482800000,1],
-      [1328569200000,2],
-      [1328655600000,1],
-      [1328742000000,1],
-      [1328828400000,32.21],
-      [1329087600000,32.35],
-      [1329174000000,32.44],
-      [1329260400000,32.46],
-      [1329346800000,32.86],
-      [1329433200000,32.75],
-      [1329778800000,32.54],
-      [1329865200000,32.33],
-      [1329951600000,32.97],
-      [1330038000000,33.41],
-      [1330297200000,33.27],
-      [1330383600000,33.27],
-      [1330470000000,32.89],
-      [1330556400000,33.10]]}];
-  const lab = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
-  return <>
-          <div>ApplicationsHistoryTabPanel</div>
-          <LineChart labels={lab} series={ser} />
-        </>;
+  const { proposedJobApplicationList, userId, filters } = useAppSelector(
+    state => ({
+      proposedJobApplicationList: state.user.proposedJobApplications.list,
+      userId: state.user.id,
+      filters: state.user.proposedJobApplications.filters,
+    }),
+  );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getProposedJobApplicationsByUserId({
+        userId: +userId,
+        dateFrom: filters.dateFrom || '',
+        dateTo: filters.dateTo || '',
+      }),
+    );
+  }, [dispatch, userId, filters]);
+
+  return (
+    <div>
+      <Filters />
+    </div>
+  );
 };

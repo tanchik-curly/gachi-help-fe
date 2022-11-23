@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectPagination } from 'store/slices/tableSlice';
 import {
   getCommentsByUserId,
   getRequestedHelpByUserId,
@@ -31,6 +30,8 @@ export const HomePage = () => {
           userId,
           limit: 4,
           skip: 0,
+          dateFrom: '',
+          dateTo: '',
         }),
       );
       dispatch(

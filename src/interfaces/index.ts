@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface User {
   id: number;
   login: string;
@@ -8,6 +9,8 @@ export interface User {
   patronym: string;
   requestedHelp: IState<RequestedHelp>;
   comments: IState<Comment>;
+  certifications: IState<Certification>;
+  socialStats: SocialStats;
 }
 
 export enum Roles {
@@ -23,8 +26,8 @@ export interface IState<T> {
   };
   filters?: {
     search?: string;
-    dateFrom?: Date;
-    dateTo?: Date;
+    dateFrom?: string;
+    dateTo?: string;
   };
 }
 
@@ -54,6 +57,21 @@ export interface HelpCategory {
   id: number;
   name: string;
 }
+
+export type Certification = {
+  id: number;
+  certificatedUserId: number;
+  name: string;
+  description: string;
+  createdAt: Date;
+};
+
+export type SocialStats = {
+  votesCount: number;
+  closedDiscussionsCount: number;
+  answearsCount: number;
+  carma: number;
+};
 
 export type Group = 'Approved' | 'Declined';
 

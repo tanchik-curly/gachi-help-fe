@@ -1,27 +1,34 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectPagination } from 'store/slices/tableSlice';
-import { getCommentsByUserId } from 'store/slices/userSlice';
+import {
+  getCommentsByUserId,
+  getSocialStatsByUserId,
+} from 'store/slices/userSlice';
 import { Box, Typography } from '@mui/material';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
-import {
-  homePageTitleComments,
-} from 'utils/tableTitles';
+import { homePageTitleComments } from 'utils/tableTitles';
 import { SocialDonutChart } from '../components/Charts/SocialDonutChart';
 
 export const SocialInfoPage = () => {
   const dispatch = useAppDispatch();
 
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
-  const { lastUserComments, userId } = useAppSelector(state => ({
+  const { socialStats, lastUserComments, userId } = useAppSelector(state => ({
     lastRequestedHelpList: state.user.requestedHelp.list,
     lastUserComments: state.user.comments.list,
+    socialStats: state.user.socialStats,
     userId: state.user.id,
   }));
 
   useEffect(() => {
     if (userId) {
+      dispatch(
+        getSocialStatsByUserId({
+          userId,
+        }),
+      );
       dispatch(
         getCommentsByUserId({
           userId,

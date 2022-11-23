@@ -5,7 +5,12 @@ import {
   RequestedHelpResponse,
   helpRequests,
 } from 'api/requests/requested-help';
-import { IState, RequestedHelp, Roles, User } from 'interfaces';
+import {
+  CertificationHistoryResponse,
+  UserSocialStatisticsResponse,
+  statistics,
+} from 'api/requests/statistics';
+import { Roles, User } from 'interfaces';
 import {
   ActionReducerMapBuilder,
   createAsyncThunk,
@@ -35,6 +40,18 @@ const initialState: User = {
       items: [],
     },
   },
+  certifications: {
+    list: {
+      itemCount: 0,
+      items: [],
+    },
+  },
+  socialStats: {
+    votesCount: 0,
+    closedDiscussionsCount: 0,
+    answearsCount: 0,
+    carma: 0,
+  },
 };
 
 export const signInUser = createAsyncThunk(
@@ -56,18 +73,48 @@ export const getRequestedHelpByUserId = createAsyncThunk(
     userId,
     limit,
     skip,
+    dateFrom,
+    dateTo,
   }: {
     userId: number;
     limit: number;
     skip: number;
+    dateFrom: string;
+    dateTo: string;
   }) => {
     try {
       const response = await helpRequests.requestHelpByUserId({
         userId,
         limit,
         skip,
+        dateFrom,
+        dateTo,
       });
       console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading help');
+    }
+  },
+);
+
+export const getCertificationsByUserId = createAsyncThunk(
+  'user/getCertificationsByUserId',
+  async ({
+    userId,
+    limit,
+    skip,
+  }: {
+    userId: number;
+    limit: number;
+    skip: number;
+  }) => {
+    try {
+      const response = await statistics.getCertificationsHistoryByUserId({
+        userId,
+        limit,
+        skip,
+      });
       return response;
     } catch (error: unknown) {
       throw Error('Error when loading help');
@@ -91,6 +138,21 @@ export const getCommentsByUserId = createAsyncThunk(
         userId,
         limit,
         skip,
+      });
+      console.log(response);
+      return response;
+    } catch (error: unknown) {
+      throw Error('Error when loading comments');
+    }
+  },
+);
+
+export const getSocialStatsByUserId = createAsyncThunk(
+  'user/getSocialStatsByUserId',
+  async ({ userId }: { userId: number }) => {
+    try {
+      const response = await statistics.getSocialStatisticsByUserId({
+        userId,
       });
       console.log(response);
       return response;
@@ -149,6 +211,28 @@ export const userSlice = createSlice({
         },
       )
       .addCase(getCommentsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
+      });
+
+    builder
+      .addCase(
+        getCertificationsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<CertificationHistoryResponse>) => {
+          state.certifications.list = payload;
+        },
+      )
+      .addCase(getCertificationsByUserId.rejected, () => {
+        toast.error('Erorr while fetching the comments');
+      });
+
+    builder
+      .addCase(
+        getSocialStatsByUserId.fulfilled,
+        (state, { payload }: PayloadAction<UserSocialStatisticsResponse>) => {
+          state.socialStats = payload;
+        },
+      )
+      .addCase(getSocialStatsByUserId.rejected, () => {
         toast.error('Erorr while fetching the comments');
       });
   },

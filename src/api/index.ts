@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { getAccessToken, removeAccessToken } from 'utils/authTokens';
 import { CustomError } from './CustomError';

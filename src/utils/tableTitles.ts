@@ -12,4 +12,10 @@ export const homePageTitleRequestedHelps = [
   'Стан запиту',
 ];
 
+export const certificationTiles = [
+  'Дата',
+  'Назва сертифікації',
+  'Опис сертифікації',
+];
+
 export const usersTitle = ['Користувач'];

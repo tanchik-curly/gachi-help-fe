@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { Search as SearchIcon } from '@mui/icons-material';
-import { IconButton, InputBase, Paper } from '@mui/material';
+import { IconButton, Paper, TextField } from '@mui/material';
 
 export const Search = ({
   value,
@@ -34,15 +35,19 @@ export const Search = ({
 
   return (
     <Paper>
-      <InputBase
+      <TextField
         placeholder={setSearchLabel(placeholder)}
         value={searchValue}
         onChange={handleSetSearchValue}
         onKeyPress={handleSubmitSearch}
+        InputProps={{
+          endAdornment: (
+            <IconButton aria-label="search" onClick={handleSearch}>
+              <SearchIcon />
+            </IconButton>
+          ),
+        }}
       />
-      <IconButton aria-label="search" onClick={handleSearch}>
-        <SearchIcon />
-      </IconButton>
     </Paper>
   );
 };

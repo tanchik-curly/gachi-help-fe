@@ -30,8 +30,28 @@ export const CategoryDonutChart = (props: CategoryDonutChartProps) => {
         
   }, [props.category]);
 
+  const updateLabels = (data: string[]) => {
+    const arr: string[] = [];
+    for (let x of data) {
+      switch(x) {
+        case "Approved":
+          x = "Підтверджених";
+          break;
+        case "Pending":
+          x = "Очікується підтвердження";
+          break;
+        case "Declined":
+          x = "Відхилених";
+          break;
+      }
+      arr.push(x);
+    }
+
+    return arr;
+  }
+
   const ser = requestStat.items.map(elem => elem.quantity);
-  const lab = requestStat.items.map(elem => elem.group);
+  const lab = updateLabels(requestStat.items.map(elem => elem.group));
 
   return (
     <Box width="100%" mt={5}>
@@ -42,7 +62,7 @@ export const CategoryDonutChart = (props: CategoryDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser} total={ser.reduce((a: number, b: number) => a + b, 0)}/>
+        <DonutChart labels={lab} series={ser} total={ser.reduce((a: number, b: number) => a + b, 0) + " Заявок"}/>
       </Box>
     </Box>
   );

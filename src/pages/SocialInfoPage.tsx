@@ -69,7 +69,7 @@ export const SocialInfoPage = () => {
         alignItems="center"
         justifyContent="center"
       >
-        {/* <SocialDonutChart user={userId}/> */}
+        <SocialDonutChart user={userId}/>
         {commentItems.length ? (
           <TableContainerGenerator
             pagination

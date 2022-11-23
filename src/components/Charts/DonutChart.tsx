@@ -6,7 +6,7 @@ import { ApexOptions } from "apexcharts";
 interface DonutChartProps {
   labels: string[];
   series: number[];
-  total: number;
+  total: string;
 }
 
 export const DonutChart = (props: DonutChartProps) => {
@@ -36,8 +36,6 @@ export const DonutChart = (props: DonutChartProps) => {
     }],
     legend: {
       position: 'right',
-      offsetY: 0,
-      height: 230,
       labels: {
         colors: ['#FFFFFF']
       }
@@ -50,8 +48,9 @@ export const DonutChart = (props: DonutChartProps) => {
             show: true,
             total: {
               show: true,
-              label: "Total",
-              formatter: () => "" + props.total
+              label: "Загалом",
+              formatter: () => "" + props.total,
+              color: "#FFFFFF"
             }
           }
         }
@@ -71,7 +70,7 @@ export const DonutChart = (props: DonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props.series} type="donut" width={380} /> : "NO DATA"}
+        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props.series} type="donut" width={380} height={500}/> : "NO DATA"}
       </Box>
     </Box>
   );

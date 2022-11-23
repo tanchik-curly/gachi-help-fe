@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Box } from '@mui/material';
 import { DonutChart } from './DonutChart';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getStatForHelpRequestByCategory } from 'store/slices/statSlice';
+import { getSocialStatsByUserId } from 'store/slices/userSlice';
+import { UserSocialStatisticsResponse } from 'api/requests/statistics';
 
 interface SocialDonutChartProps {
   user: number;
@@ -10,22 +11,32 @@ interface SocialDonutChartProps {
 
 export const SocialDonutChart = (props: SocialDonutChartProps) => {
   const dispatch = useAppDispatch();
-  const { requestStat} = useAppSelector(state => ({
-    requestStat: state.stat.requestedHelpStat
+  const { socialStats } = useAppSelector(state => ({
+    socialStats: state.user.socialStats
   }));
 
   useEffect(() => {
-      dispatch(getStatForHelpRequestByCategory({
-        userId: props.user,
-        category: undefined
+      dispatch(getSocialStatsByUserId({
+        userId: props.user
       }));
         
   }, [dispatch]);
 
-  const retrieveLabels = (data: any) => {
-    let arr: string[] = [];
-    for (const key in data) {
+  const retrieveLabels = (data: UserSocialStatisticsResponse) => {
+    const arr: string[] = [];
+    for (let key in data) {
       if (key !== "carma") {
+        switch(key) {
+          case "votesCount":
+            key = "Кількість голосів";
+            break;
+          case "closedDiscussionsCount":
+            key = "Закритих обговорень";
+            break;
+          case "answearsCount":
+            key = "Кількість відповідей";
+            break;
+        }
 				arr.push(key);
       }
     }
@@ -34,7 +45,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
   }
 
   const retrieveSeries = (data: any) => {
-		let arr: number[] = [];
+		const arr: number[] = [];
     for (const key in data) {
       if (key !== "carma") {
 				arr.push(data[key]);
@@ -44,8 +55,8 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
 		return arr;
   }
 
-  const ser = retrieveSeries(requestStat);
-  const lab = retrieveLabels(requestStat);
+  const ser = retrieveSeries(socialStats);
+  const lab = retrieveLabels(socialStats);
 
   return (
     <Box width="100%" mt={5}>
@@ -56,7 +67,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser} total={3}/>
+        <DonutChart labels={lab} series={ser} total={socialStats["carma"] + " Очків"}/>
       </Box>
     </Box>
   );

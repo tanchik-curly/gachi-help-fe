@@ -6,7 +6,7 @@ import { getSocialStatsByUserId } from 'store/slices/userSlice';
 import { UserSocialStatisticsResponse } from 'api/requests/statistics';
 
 interface SocialDonutChartProps {
-  user: number;
+  userId: number;
 }
 
 export const SocialDonutChart = (props: SocialDonutChartProps) => {
@@ -17,7 +17,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
 
   useEffect(() => {
       dispatch(getSocialStatsByUserId({
-        userId: props.user
+        userId: props.userId
       }));
         
   }, [dispatch]);
@@ -67,7 +67,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser} total={socialStats["carma"] + " Очків"}/>
+        <DonutChart labels={lab} series={ser} total={socialStats.carma + " Очків"} holeInside={true}/>
       </Box>
     </Box>
   );

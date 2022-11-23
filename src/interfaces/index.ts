@@ -48,12 +48,14 @@ export interface RequestedHelp {
   createdAt: Date;
 }
 
+export interface ApplicationType {
+  id: number;
+  name: string;
+}
+
 export interface JobApplication {
   id: number;
-  applicationType: {
-    id: number;
-    name: string;
-  };
+  applicationType: ApplicationType;
   name: string;
   description: string;
   salary: number;

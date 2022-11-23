@@ -62,7 +62,7 @@ export const CategoryDonutChart = (props: CategoryDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser} total={ser.reduce((a: number, b: number) => a + b, 0) + " Заявок"}/>
+        <DonutChart labels={lab} series={ser} total={ser.reduce((a: number, b: number) => a + b, 0) + " Заявок"} holeInside={true}/>
       </Box>
     </Box>
   );

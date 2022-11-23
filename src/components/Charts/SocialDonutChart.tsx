@@ -67,7 +67,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <DonutChart labels={lab} series={ser} total={socialStats["carma"] + " Очків"}/>
+        <DonutChart labels={lab} series={ser} total={socialStats.carma + " Очків"} holeInside={true}/>
       </Box>
     </Box>
   );

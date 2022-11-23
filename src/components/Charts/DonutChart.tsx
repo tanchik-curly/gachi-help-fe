@@ -6,7 +6,8 @@ import { ApexOptions } from "apexcharts";
 interface DonutChartProps {
   labels: string[];
   series: number[];
-  total: string;
+  total: string | undefined;
+  holeInside: boolean;
 }
 
 export const DonutChart = (props: DonutChartProps) => {
@@ -17,25 +18,20 @@ export const DonutChart = (props: DonutChartProps) => {
 
   const options: ApexOptions = {
     chart: {
-      width: 380,
-      type: 'donut',
+      width: 1400,
     },
     dataLabels: {
       enabled: false
     },
     responsive: [{
-      breakpoint: 480,
       options: {
-        chart: {
-          width: 200
-        },
         legend: {
           show: false
         }
       }
     }],
     legend: {
-      position: 'right',
+      position: 'bottom',
       labels: {
         colors: ['#FFFFFF']
       }
@@ -61,16 +57,19 @@ export const DonutChart = (props: DonutChartProps) => {
     }
   };
 
+  if (!props.total && options?.plotOptions?.pie?.donut?.labels && options?.tooltip) {
+    options.plotOptions.pie.donut.labels.show = false;
+    options.tooltip.enabled = true;
+  }
+
   return (
-    <Box width="100%" mt={5}>
+    <Box width="100%">
       <Box
-        padding={5}
         display="flex"
-        flexDirection="row"
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="center"
       >
-        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props.series} type="donut" width={380} height={500}/> : "NO DATA"}
+        { checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props.series} type={props.holeInside ? "donut" : "pie"} height={1400}/> : "Даних  немає"}
       </Box>
     </Box>
   );

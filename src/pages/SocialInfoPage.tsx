@@ -15,7 +15,7 @@ export const SocialInfoPage = () => {
   const dispatch = useAppDispatch();
 
   const { rowsPerPage, currentPage } = useAppSelector(selectPagination);
-  const { socialStats, lastUserComments, userId } = useAppSelector(state => ({
+  const { lastUserComments, userId } = useAppSelector(state => ({
     lastRequestedHelpList: state.user.requestedHelp.list,
     lastUserComments: state.user.comments.list,
     socialStats: state.user.socialStats,
@@ -69,7 +69,7 @@ export const SocialInfoPage = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <SocialDonutChart user={userId}/>
+        <SocialDonutChart userId={userId}/>
         {commentItems.length ? (
           <TableContainerGenerator
             pagination

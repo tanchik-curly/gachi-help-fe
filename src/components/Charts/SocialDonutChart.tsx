@@ -6,7 +6,7 @@ import { getSocialStatsByUserId } from 'store/slices/userSlice';
 import { UserSocialStatisticsResponse } from 'api/requests/statistics';
 
 interface SocialDonutChartProps {
-  user: number;
+  userId: number;
 }
 
 export const SocialDonutChart = (props: SocialDonutChartProps) => {
@@ -17,7 +17,7 @@ export const SocialDonutChart = (props: SocialDonutChartProps) => {
 
   useEffect(() => {
       dispatch(getSocialStatsByUserId({
-        userId: props.user
+        userId: props.userId
       }));
         
   }, [dispatch]);

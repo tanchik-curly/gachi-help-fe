@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";

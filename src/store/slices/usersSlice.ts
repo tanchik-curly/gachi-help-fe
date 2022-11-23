@@ -77,7 +77,15 @@ export const getUserById = createAsyncThunk(
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    setUsersFilters: (state, action) => ({
+      ...state,
+      filters: {
+        ...state.filters,
+        ...action.payload,
+      },
+    }),
+  },
   extraReducers: builder => {
     builder
       .addCase(
@@ -102,5 +110,7 @@ export const usersSlice = createSlice({
       });
   },
 });
+
+export const { setUsersFilters } = usersSlice.actions;
 
 export default usersSlice.reducer;

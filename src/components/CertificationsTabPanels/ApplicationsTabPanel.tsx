@@ -20,7 +20,7 @@ export const ApplicationsTabPanel = () => {
         dateTo: filters.dateTo || '',
       }),
     );
-  }, [dispatch, filters]);
+  }, [dispatch, userId, filters]);
 
   return (
     <div>

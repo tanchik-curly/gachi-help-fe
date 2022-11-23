@@ -22,7 +22,7 @@ export const ApplicationsHistoryTabPanel = () => {
         dateTo: filters.dateTo || '',
       }),
     );
-  }, [dispatch, filters]);
+  }, [dispatch, userId, filters]);
 
   return (
     <div>

@@ -1,5 +1,5 @@
 import { axiosInstance } from 'api';
-import { Certification, Group, HelpCategory } from 'interfaces';
+import { Certification, Group, HelpCategory, JobApplication } from 'interfaces';
 import routes from '../../apiRoutes';
 
 export type HelpRequestStatResponse = Array<{ group: Group; quantity: number }>;
@@ -17,6 +17,8 @@ export type UserSocialStatisticsResponse = {
   carma: number;
 };
 
+export type JobApplicationResponse = JobApplication[];
+
 export type StatForHelpRequestsByUser = {
   userId: number;
   dateFrom?: Date;
@@ -32,8 +34,14 @@ export type CertificationsByUser = {
   limit: number;
 };
 
-export type SocialStatisticsByUser = {
+export type StatByUser = {
   userId: number;
+};
+
+export type StatByUserAndDate = {
+  userId: number;
+  dateFrom?: string;
+  dateTo?: string;
 };
 
 export const statistics = {
@@ -44,12 +52,13 @@ export const statistics = {
     userId,
     category,
   }: StatForHelpRequestsByUser): Promise<HelpRequestStatResponse> {
-    let catEnding = "";
+    let catEnding = '';
     if (category) {
-      catEnding = `&categoryId=${category}`
+      catEnding = `&categoryId=${category}`;
     }
     return axiosInstance.get(
-      `${routes.STATISTICS_URL}/${userId}/help-requests?by=category` + catEnding,
+      `${routes.STATISTICS_URL}/${userId}/help-requests?by=category` +
+        catEnding,
     );
   },
   getStatisticsForHelpRequestsByUserForPeriod({
@@ -74,7 +83,39 @@ export const statistics = {
   },
   getSocialStatisticsByUserId({
     userId,
-  }: SocialStatisticsByUser): Promise<UserSocialStatisticsResponse> {
+  }: StatByUser): Promise<UserSocialStatisticsResponse> {
     return axiosInstance.get(`${routes.STATISTICS_URL}/${userId}/social-stats`);
+  },
+  getJobApplicationStatByUserId({
+    userId,
+    dateFrom,
+    dateTo,
+  }: StatByUserAndDate): Promise<JobApplicationResponse> {
+    const dateParams = new URLSearchParams({
+      from: dateFrom || '',
+      to: dateTo || '',
+    }).toString();
+
+    return axiosInstance.get(
+      `${routes.STATISTICS_URL}/${userId}/job-applications?${
+        dateFrom || dateTo ? dateParams : ''
+      }`,
+    );
+  },
+  getProposedJobApplications({
+    userId,
+    dateFrom,
+    dateTo,
+  }: StatByUserAndDate): Promise<JobApplicationResponse> {
+    const dateParams = new URLSearchParams({
+      from: dateFrom || '',
+      to: dateTo || '',
+    }).toString();
+
+    return axiosInstance.get(
+      `${routes.STATISTICS_URL}/${userId}/proposed-job-applications?${
+        dateFrom || dateTo ? dateParams : ''
+      }`,
+    );
   },
 };

@@ -13,7 +13,6 @@ function Filters() {
   );
 
   const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
     setSelectedCategory(items[(event.target.value as unknown as number) - 1]);
   };
 

@@ -9,6 +9,8 @@ import { TableContainerRow } from 'components/Table/TableContainerRow/TableConta
 import { homePageTitleRequestedHelps } from 'utils/tableTitles';
 import Filters from './filters/PeriodFilters';
 import 'rsuite/dist/rsuite.min.css';
+import { getCategoriesList } from 'store/slices/statSlice';
+import { RequestHelpColumnChart } from 'components/Charts/RequestHelpColumnChart';
 
 export const PeriodTabPanel = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +32,7 @@ export const PeriodTabPanel = () => {
           dateTo: filters?.dateTo || '',
         }),
       );
+      dispatch(getCategoriesList());
     }
   }, [
     dispatch,
@@ -58,6 +61,7 @@ export const PeriodTabPanel = () => {
   return (
     <Box padding={5}>
       <Filters />
+      <RequestHelpColumnChart helpData={lastRequestedHelpList.items} title={"Графік наданої допомоги по категоріям"}/>
       <Box
         display="flex"
         flexDirection="column"

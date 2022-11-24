@@ -6,6 +6,7 @@ import { ApexOptions } from "apexcharts";
 interface LineChartProps {
   labels: string[];
   series: ApexAxisChartSeries | undefined;
+  title: string;
 }
 
 export const LineChart = (props: LineChartProps) => {
@@ -17,7 +18,7 @@ export const LineChart = (props: LineChartProps) => {
 
   const options: ApexOptions = {
     chart: {
-      type: 'line',
+      type: "line",
       zoom: {
         enabled: true
       }
@@ -26,36 +27,54 @@ export const LineChart = (props: LineChartProps) => {
       enabled: false
     },
     stroke: {
-      curve: 'straight'
+      curve: 'smooth'
+    },
+    legend: {
+      position: 'bottom',
+      labels: {
+        colors: ['#FFFFFF']
+      }
     },
     title: {
-      text: 'Product Trends by Month',
-      align: 'center'
-    },
-    grid: {
-      row: {
-        colors: ['#f3f3f3', 'transparent'],
-        // opacity: 0.5
-      },
+      text: props?.title,
+      align: 'center',
+      style: {
+        color: "#FFFFFF"
+      }
     },
     xaxis: {
       type: 'datetime',
       labels: {
-        format: 'MM yyyy'
+        format: 'MM yyyy',
+        style: {
+          colors: ["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"]
+        },
       }
-    }
+    },
+    yaxis: {
+      labels: {
+        formatter: function(val) {
+          return val.toFixed(0);
+        },
+        style: {
+          colors: ["#FFFFFF"]
+        },
+      },
+      min: 0,
+      axisTicks: {
+        color: "#FFFFFF"
+      }
+    },
   };
 
   return (
     <Box width="100%" mt={5}>
       <Box
-        padding={5}
         display="flex"
-        flexDirection="row"
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="center"
       >
-        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props.series} type="line" width={1000} height={500}/> : "NO DATA"}
+        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props?.series} width={1000} height={500}/> : "Немає даних"}
       </Box>
     </Box>
   );

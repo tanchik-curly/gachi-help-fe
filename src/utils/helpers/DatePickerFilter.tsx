@@ -15,7 +15,6 @@ export const FilterDateRangePicker = ({
 
   const setDateRangeFilter = (date: any) => {
     dispatch(setCurrentPage(0));
-    console.log(date);
     dispatch(
       setFilterValue({
         dateFrom: date ? new Date(date[0]).toISOString() : '',

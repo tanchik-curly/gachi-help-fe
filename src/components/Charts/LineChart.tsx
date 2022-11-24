@@ -18,7 +18,7 @@ export const LineChart = (props: LineChartProps) => {
 
   const options: ApexOptions = {
     chart: {
-      type: 'line',
+      type: "line",
       zoom: {
         enabled: true
       }
@@ -74,7 +74,7 @@ export const LineChart = (props: LineChartProps) => {
         alignItems="center"
         justifyContent="center"
       >
-        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props?.series} type="line" width={1000} height={500}/> : "Немає даних"}
+        {checkDataAvailability(props.series) ? <ReactApexChart options={options} series={props?.series} width={1000} height={500}/> : "Немає даних"}
       </Box>
     </Box>
   );

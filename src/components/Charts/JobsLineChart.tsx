@@ -5,13 +5,13 @@ import { JobApplication, ApplicationType, ChartLine } from '../../interfaces/ind
 import dayjs, { Dayjs } from "dayjs";
 import _ from 'lodash';
 
-interface AppliedLineChartProps {
+interface JobsLineChartLineChartProps {
   applicationData: JobApplication[];
   applicationTypes: ApplicationType[];
   title: string;
 }
 
-export const AppliedLineChart = (props: AppliedLineChartProps) => {
+export const JobsLineChart = (props: JobsLineChartLineChartProps) => {
 
   const jobApplicationId = (item: JobApplication) => {
     return `${new Date(item.createdAt).getFullYear()}+${new Date(item.createdAt).getMonth()}+${item.applicationType.id}`;
@@ -27,12 +27,6 @@ export const AppliedLineChart = (props: AppliedLineChartProps) => {
     const day2: Dayjs = dayjs(date2);
 
     return Math.ceil(day1.diff(day2, 'month', true));
-  }
-
-  const startOfMonth = (date: string) => {
-    return dayjs(date)
-      .startOf("month")
-      .toISOString();
   }
 
   const prepareSeries = (arr: JobApplication[]) => {
@@ -70,10 +64,6 @@ export const AppliedLineChart = (props: AppliedLineChartProps) => {
       resSeries.push(temp);
     }
 
-    console.log("GROUP");
-    console.log(groupArr);
-    console.log("ARRAY");
-    console.log(resSeries);
     return resSeries;
   }
 

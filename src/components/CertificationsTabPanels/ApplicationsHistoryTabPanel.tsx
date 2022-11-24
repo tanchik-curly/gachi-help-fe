@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { getJobApplicationsbyUserId, getProposedJobApplicationsByUserId } from 'store/slices/userSlice';
 import Filters from 'components/ApplicationsTabPanelFilters/ApplicationHistoryTabPanelFilters';
-import { AppliedLineChart } from 'components/Charts/AppliedLineChart';
+import { JobsLineChart } from 'components/Charts/JobsLineChart';
 
 export const ApplicationsHistoryTabPanel = () => {
   const { proposedJobApplicationList, appliedJobList, userId, filters } = useAppSelector(
@@ -62,8 +62,8 @@ export const ApplicationsHistoryTabPanel = () => {
   return (
     <div>
       <Filters />
-      <AppliedLineChart applicationData={proposedJobApplicationList.items} applicationTypes={types} title={"Графік пропонованих вакансій"}/>
-      <AppliedLineChart applicationData={appliedJobList.items} applicationTypes={types} title={"Графік поданих вакансій"}/>
+      <JobsLineChart applicationData={proposedJobApplicationList.items} applicationTypes={types} title={"Графік пропонованих вакансій"}/>
+      <JobsLineChart applicationData={appliedJobList.items} applicationTypes={types} title={"Графік поданих вакансій"}/>
     </div>
   );
 };

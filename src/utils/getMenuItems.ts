@@ -13,18 +13,29 @@ const menuItems = [
     path: '/social-information',
     icon: GroupsIcon,
   },
-  {
-    title: 'Працевлаштування та сертифікації',
-    path: '/certifications',
-    icon: GradeIcon,
-  },
 ];
 
-export const getMenuItems = (role: Roles) =>
-  role !== Roles.Worker
-    ? menuItems
-    : menuItems.concat({
-        title: 'Користувачі',
-        path: '/users',
-        icon: AccountBoxIcon,
-      });
+export const getMenuItems = (role: Roles) => {
+  switch (role) {
+    case Roles.Worker:
+      return [
+        ...menuItems,
+        {
+          title: 'Користувачі',
+          path: '/users',
+          icon: AccountBoxIcon,
+        },
+      ];
+    case Roles.User:
+      return [
+        ...menuItems,
+        {
+          title: 'Працевлаштування та сертифікації',
+          path: '/certifications',
+          icon: GradeIcon,
+        },
+      ];
+    default:
+      return [];
+  }
+};

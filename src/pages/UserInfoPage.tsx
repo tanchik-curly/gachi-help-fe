@@ -15,6 +15,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { JobsLineChart } from 'components/Charts/JobsLineChart';
+import { RequestHelpColumnChart } from 'components/Charts/RequestHelpColumnChart';
+import { SocialDonutChart } from 'components/Charts/SocialDonutChart';
 import { Status } from 'components/Status';
 import TableContainerGenerator from 'components/Table/TableContainer/TableContainer';
 import { TableContainerRow } from 'components/Table/TableContainerRow/TableContainerRow';
@@ -27,7 +30,14 @@ export const UserInfoPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { lastRequestedHelpList, lastUserComments } = useAppSelector(state => ({
+  const {
+    appliedJobList,
+    proposedJobApplicationList,
+    lastRequestedHelpList,
+    lastUserComments,
+  } = useAppSelector(state => ({
+    proposedJobApplicationList: state.user.proposedJobApplications.list,
+    appliedJobList: state.user.jobApplications.list,
     lastRequestedHelpList: state.user.requestedHelp.list,
     lastUserComments: state.user.comments.list,
     userId: state.user.id,
@@ -87,6 +97,37 @@ export const UserInfoPage = () => {
     ),
   );
 
+  const types = [
+    {
+      id: 1,
+      name: 'Кухар',
+    },
+    {
+      id: 2,
+      name: 'Поліцейський',
+    },
+    {
+      id: 3,
+      name: 'Сушист',
+    },
+    {
+      id: 4,
+      name: 'Далекобійник',
+    },
+    {
+      id: 5,
+      name: 'Продавець-консультант',
+    },
+    {
+      id: 6,
+      name: 'Дизайнер',
+    },
+    {
+      id: 7,
+      name: 'Програміст',
+    },
+  ];
+
   return (
     <Box padding={5} width="100%" sx={{ overflowY: 'hidden' }} mt={5}>
       <Box display="flex" justifyContent="flex-start" margin="20px 0 ">
@@ -124,6 +165,19 @@ export const UserInfoPage = () => {
           </Stack>
         </Box>
       </Paper>
+      <Typography
+        sx={{ marginTop: 5, color: 'grey.200' }}
+        variant="h4"
+        textAlign="left"
+      >
+        Статистика отримання допомоги
+      </Typography>
+      <Paper sx={{ background: '#242424', color: 'grey.700' }}>
+        <RequestHelpColumnChart
+          helpData={lastRequestedHelpList.items}
+          title={'Графік наданої допомоги по категоріям'}
+        />
+      </Paper>
       <Box mt={5}>
         {requestedHelpList.length ? (
           <TableContainerGenerator
@@ -135,6 +189,18 @@ export const UserInfoPage = () => {
         ) : (
           <p>No requested help by user yet</p>
         )}
+      </Box>
+      <Box>
+        <Typography
+          sx={{ marginTop: 5, color: 'grey.200' }}
+          variant="h4"
+          textAlign="left"
+        >
+          Соціальна статистика
+        </Typography>
+        <Paper sx={{ background: '#242424', color: 'grey.700' }}>
+          <SocialDonutChart userId={userId ? +userId : 0} />
+        </Paper>
       </Box>
       <Box mt={5}>
         {commentItems.length ? (
@@ -148,6 +214,25 @@ export const UserInfoPage = () => {
           <p>No comments</p>
         )}
       </Box>
+      <Typography
+        sx={{ marginTop: 5, color: 'grey.200' }}
+        variant="h4"
+        textAlign="left"
+      >
+        Статистика сертифікацій та працевлаштування
+      </Typography>
+      <Paper sx={{ background: '#242424', color: 'grey.700' }}>
+        <JobsLineChart
+          applicationData={proposedJobApplicationList.items}
+          applicationTypes={types}
+          title={'Графік пропонованих вакансій'}
+        />
+        <JobsLineChart
+          applicationData={appliedJobList.items}
+          applicationTypes={types}
+          title={'Графік поданих вакансій'}
+        />
+      </Paper>
     </Box>
   );
 };

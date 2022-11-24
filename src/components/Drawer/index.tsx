@@ -63,7 +63,7 @@ export const Drawer = () => {
       sx={{
         zIndex: '1250 !important',
         width: 400,
-        height: '100vh',
+        minHeight: '100vh',
         backgroundColor: '#242424',
         color: 'white',
       }}

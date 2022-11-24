@@ -1,38 +1,70 @@
-import React from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import ProtectedRoute from 'routes/ProtectedRoute';
+import React, { useEffect } from 'react';
+import {
+  Outlet,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import NoAuthTokenRestriction from 'routes/restriction/NoAuthTokenRestriction';
+import { Routes as Paths } from 'routes/routesConfig';
+import { useAppDispatch } from 'store/hooks';
+import { setUser } from 'store/slices/userSlice';
+import { Box } from '@mui/material';
+import { Drawer } from 'components/Drawer';
 import Header from 'components/Header';
 import { CertificationPage } from 'pages/CertificationPage';
 import { HelpPage } from 'pages/HelpPage';
 import { HomePage } from 'pages/HomePage';
 import { LoginPage } from 'pages/LoginPage';
-import { NotFoundPage } from 'pages/NotFoundPage';
-import { RegisterPage } from 'pages/RegisterPage';
+import { Plug } from 'pages/Plug';
 import { SocialInfoPage } from 'pages/SocialInfoPage';
+import { UserInfoPage } from 'pages/UserInfoPage';
+import { UsersPage } from 'pages/UsersPage';
+import { getAccessToken } from 'utils/authTokens';
+import { getUserDataFromToken } from 'utils/getUserDataFromToken';
 import './App.css';
 
 function App() {
-  // implement logic for this later
-  const isAuthed = true;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setUser(getUserDataFromToken(getAccessToken() || '')));
+  }, []);
 
   return (
     <div className="App">
-      <Header />
       <Router>
         <Routes>
-          <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
-            <Route path="/login" element={<LoginPage />} />
+          <Route path={Paths.Login} element={<LoginPage />} />
+          <Route path={Paths.Main} element={<Plug />} />
+          <Route
+            element={
+              <NoAuthTokenRestriction>
+                <Header />
+                <Box display="flex" flexDirection="row">
+                  <Drawer />
+                  <Outlet />
+                </Box>
+              </NoAuthTokenRestriction>
+            }
+          >
+            <Route path={Paths.Home} element={<HomePage />} />
+            <Route path={Paths.Users} element={<UsersPage />} />
+            <Route path={Paths.User} element={<UserInfoPage />} />
+            <Route path={Paths.RequestPage} element={<HelpPage />} />
+            <Route
+              path={Paths.SocialInformationPage}
+              element={<SocialInfoPage />}
+            />
+            <Route
+              path={Paths.CertificationPage}
+              element={<CertificationPage />}
+            />
           </Route>
-          <Route path="/" element={<ProtectedRoute isAuthed={isAuthed} />}>
-            <Route path="/register" element={<RegisterPage />} />
-          </Route>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/request-help" element={<HelpPage />} />
-          <Route path="/social-information" element={<SocialInfoPage />} />
-          <Route path="/certifications" element={<CertificationPage />} />
-          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </div>
   );
 }

@@ -1,9 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import {
-  getAccessToken,
-  getRefreshToken,
-  removeAccessToken,
-} from 'utils/authTokens';
+import { getAccessToken, removeAccessToken } from 'utils/authTokens';
 import { CustomError } from './CustomError';
 import { API_BASE_URL } from './apiRoutes';
 
@@ -21,16 +17,14 @@ axiosInstance.interceptors.response.use(requestParser, error => {
   if (error.response?.status === 401) {
     removeAccessToken();
   }
-
   return errorHandler(error);
 });
 
 axiosInstance.interceptors.request.use(async request => {
   if (request.url) {
     const accessToken = getAccessToken();
-    const refreshToken = getRefreshToken();
 
-    if (accessToken && refreshToken && request.headers) {
+    if (accessToken && request.headers) {
       request.headers.Authorization = `Bearer ${accessToken}`;
     }
   }

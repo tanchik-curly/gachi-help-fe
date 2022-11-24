@@ -40,6 +40,11 @@ export interface Table {
 
 export type Status = 'Declined' | 'Pending' | 'Approved';
 
+export interface ChartLine {
+  name: string;
+  data: number[][];
+}
+
 export interface RequestedHelp {
   id: number;
   helpCategory: HelpCategory;

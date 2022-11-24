@@ -51,7 +51,6 @@ export const getStatForHelpRequestByPeriod = createAsyncThunk(
           dateFrom,
           dateTo,
         });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Something went wrong');
@@ -68,7 +67,6 @@ export const getStatForHelpRequestByCategory = createAsyncThunk(
           userId,
           category,
         });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Something went wrong');

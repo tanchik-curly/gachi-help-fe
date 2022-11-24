@@ -1,47 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getStatForHelpRequestByCategory } from 'store/slices/statSlice';
 import { LineChart } from './LineChart';
-import { JobApplication, ApplicationType } from '../../interfaces/index';
+import { JobApplication, ApplicationType, ChartLine } from '../../interfaces/index';
 import dayjs, { Dayjs } from "dayjs";
 import _ from 'lodash';
 
 interface AppliedLineChartProps {
   applicationData: JobApplication[];
   applicationTypes: ApplicationType[];
+  title: string;
 }
 
 export const AppliedLineChart = (props: AppliedLineChartProps) => {
 
-  const prepareSeries = (arr: JobApplication[]) => {
-    if (arr?.length === 0) {
-      return ;
-    }
-    console.log(_.groupBy(arr, ({createdAt}) => new Date(createdAt).getMonth()));
+  const jobApplicationId = (item: JobApplication) => {
+    return `${new Date(item.createdAt).getFullYear()}+${new Date(item.createdAt).getMonth()}+${item.applicationType.id}`;
+  }
 
-
-    // const copyArr = [...arr].sort((a,b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    // const typeDeclaration: number[][] = [];
-    // for (const type of props.applicationTypes) {
-    //   const typeData = {
-    //     name: type.name,
-    //     data: typeDeclaration
-    //   };
-
-    //   for (const application of copyArr) {
-    //     if (application.applicationType.id === type.id) {
-    //       const index = findMonthDifference(application.createdAt, copyArr[0].createdAt);
-    //       if (typeData.data[index]) {
-    //         typeData.data[index] = [new Date(application.createdAt).getTime(), 1];
-    //       } else {
-    //         typeData.data[index] = [typeData.data[index][0], typeData.data[index][1] + 1];
-    //       }
-    //     }
-    //   }
-    //}
-
-    return null;
+  const retrieveDate = (date: string) => {
+    const parts: string[] = date.split("+");
+    return new Date(+parts[0], +parts[1], 1);
   }
 
   const findMonthDifference = (date1: Date, date2: Date) => {
@@ -51,37 +29,56 @@ export const AppliedLineChart = (props: AppliedLineChartProps) => {
     return Math.ceil(day1.diff(day2, 'month', true));
   }
 
-  // const startOfMonth = (date: string) => {
-  //   return dayjs.utc(date)
-  //     .startOf("month")
-  //     .toISOString();
-  // }
-
-  const updateLabels = (data: string[]) => {
-    const arr: string[] = [];
-    for (let x of data) {
-      switch(x) {
-        case "Approved":
-          x = "Підтверджених";
-          break;
-        case "Pending":
-          x = "Очікується підтвердження";
-          break;
-        case "Declined":
-          x = "Відхилених";
-          break;
-      }
-      arr.push(x);
-    }
-
-    return arr;
+  const startOfMonth = (date: string) => {
+    return dayjs(date)
+      .startOf("month")
+      .toISOString();
   }
 
-  console.log("TOTAL: ");
-  console.log(prepareSeries(props?.applicationData));
+  const prepareSeries = (arr: JobApplication[]) => {
+    if (arr?.length === 0) {
+      return ;
+    }
 
-  //   const ser = requestStat.items.map(elem => elem.quantity);
-  //   const lab = updateLabels(requestStat.items.map(elem => elem.group));
+    const minDate = new Date(Math.min.apply(null, arr.map(item => new Date(item.createdAt).getTime())));
+    const maxDate = new Date(Math.max.apply(null, arr.map(item => new Date(item.createdAt).getTime())));
+    const monthDifference = findMonthDifference(maxDate, minDate);
+    const groupArr = _.groupBy(arr, item => jobApplicationId(item));
+    
+    const resSeries: ApexAxisChartSeries = [];
+    for (const type of props.applicationTypes) {
+      const res: ChartLine = {name: "", data: []};
+      res.name = type.name;
+      for (const [key, value] of Object.entries(groupArr)) {
+        if (key.endsWith(type.id.toString())) {
+          const firstMonthDay = retrieveDate(key);
+          const index = findMonthDifference(firstMonthDay, minDate);
+          res.data[index] = [firstMonthDay.getTime(), value.length];
+        }
+      }
+
+      for (let i = 0; i <= monthDifference; ++i) {
+        if (!res.data[i]) {
+          const date = dayjs(minDate).add(i, 'month').startOf("month").valueOf();
+          res.data[i] = [date, 0];
+        } 
+      }
+
+      const temp: any = {};
+      temp.name = res.name;
+      temp.data = res.data;
+      resSeries.push(temp);
+    }
+
+    console.log("GROUP");
+    console.log(groupArr);
+    console.log("ARRAY");
+    console.log(resSeries);
+    return resSeries;
+  }
+
+  const ser = prepareSeries(props.applicationData);
+  const lab = props.applicationTypes.map(elem => elem.name);
 
   return (
     <Box width="100%" mt={5}>
@@ -92,7 +89,7 @@ export const AppliedLineChart = (props: AppliedLineChartProps) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <LineChart labels={["A"]} series={undefined}/>
+        <LineChart labels={lab} series={ser} title={props.title}/>
       </Box>
     </Box>
   );

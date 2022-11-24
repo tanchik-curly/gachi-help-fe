@@ -72,8 +72,6 @@ export const UserInfoPage = () => {
     />
   ));
 
-  console.log(lastRequestedHelpList.items);
-
   const requestedHelpList = lastRequestedHelpList.items.map(
     requestedHelpItem => (
       <TableContainerRow

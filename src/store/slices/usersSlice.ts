@@ -40,7 +40,6 @@ export const getListOfUsers = createAsyncThunk(
         limit,
         skip,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Invalid credentials');
@@ -55,7 +54,6 @@ export const getUserById = createAsyncThunk(
       const response = await users.getUser({
         userId,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Invalid credentials');

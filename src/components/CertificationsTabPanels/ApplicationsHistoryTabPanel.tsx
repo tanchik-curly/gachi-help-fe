@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { getProposedJobApplicationsByUserId } from 'store/slices/userSlice';
+import { getJobApplicationsbyUserId, getProposedJobApplicationsByUserId } from 'store/slices/userSlice';
 import Filters from 'components/ApplicationsTabPanelFilters/ApplicationHistoryTabPanelFilters';
 import { AppliedLineChart } from 'components/Charts/AppliedLineChart';
 
 export const ApplicationsHistoryTabPanel = () => {
-  const { proposedJobApplicationList, userId, filters } = useAppSelector(
+  const { proposedJobApplicationList, appliedJobList, userId, filters } = useAppSelector(
     state => ({
       proposedJobApplicationList: state.user.proposedJobApplications.list,
+      appliedJobList: state.user.jobApplications.list,
       userId: state.user.id,
       filters: state.user.proposedJobApplications.filters,
     }),
@@ -19,6 +20,14 @@ export const ApplicationsHistoryTabPanel = () => {
     if (userId) {
       dispatch(
         getProposedJobApplicationsByUserId({
+          userId: +userId,
+          dateFrom: filters.dateFrom || '',
+          dateTo: filters.dateTo || '',
+        }),
+      );
+
+      dispatch(
+        getJobApplicationsbyUserId({
           userId: +userId,
           dateFrom: filters.dateFrom || '',
           dateTo: filters.dateTo || '',
@@ -53,7 +62,8 @@ export const ApplicationsHistoryTabPanel = () => {
   return (
     <div>
       <Filters />
-      <AppliedLineChart applicationData={proposedJobApplicationList.items} applicationTypes={types}/>
+      <AppliedLineChart applicationData={proposedJobApplicationList.items} applicationTypes={types} title={"Графік пропонованих вакансій"}/>
+      <AppliedLineChart applicationData={appliedJobList.items} applicationTypes={types} title={"Графік поданих вакансій"}/>
     </div>
   );
 };

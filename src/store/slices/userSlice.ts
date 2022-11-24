@@ -128,7 +128,6 @@ export const getRequestedHelpByUserId = createAsyncThunk(
         dateFrom,
         dateTo,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Error when loading help');
@@ -153,7 +152,6 @@ export const getProposedJobApplicationsByUserId = createAsyncThunk(
         dateFrom,
         dateTo,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Error when loading help');
@@ -178,7 +176,6 @@ export const getJobApplicationsbyUserId = createAsyncThunk(
         dateFrom,
         dateTo,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Error when loading help');
@@ -227,7 +224,6 @@ export const getCommentsByUserId = createAsyncThunk(
         limit,
         skip,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Error when loading comments');
@@ -242,7 +238,6 @@ export const getSocialStatsByUserId = createAsyncThunk(
       const response = await statistics.getSocialStatisticsByUserId({
         userId,
       });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       throw Error('Error when loading comments');
@@ -255,7 +250,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
-      console.log(action.payload);
       if (action.payload) return { ...state, ...action.payload };
       return { ...state, ...initialState };
     },
@@ -290,7 +284,6 @@ export const userSlice = createSlice({
         signInUser.fulfilled,
         (state, { payload }: PayloadAction<AuthResponse>) => {
           const userData: User | null = getUserDataFromToken(payload.token);
-          console.log('userdata', userData);
           if (userData) {
             toast.success('Successfully logged in!');
             return {
